@@ -5,6 +5,7 @@ import 'package:rakshak/results_screen/GoogleDone.dart';
 import 'package:rakshak/main_screens/RegisterPage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../results_screen/Done.dart';
+import 'package:rakshak/main_screens/TestPage.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 bool _wrongEmail = false;
@@ -76,8 +77,13 @@ class _LoginPageState extends State<LoginPage> {
 
     Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) => GoogleDone(user, _googleSignIn)));
+        // test code
+        MaterialPageRoute(builder: (context) => TestPage())
+
+        // actual code
+        // MaterialPageRoute(
+        //     builder: (context) => GoogleDone(user, _googleSignIn))
+        );
   }
 
   String emailText = 'Email doesn\'t match';
