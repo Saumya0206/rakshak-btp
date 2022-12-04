@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "748027618271",
+    "project_id": "rakshak-btp",
+    "storage_bucket": "rakshak-btp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748027618271:android:40c4e9050f8118fa081a6a",
+        "android_client_info": {
+          "package_name": "com.example.rakshak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748027618271-9b2lstc4t1ilfloar36aij4knejg5her.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ6IsYRZiKwsYq1Bu0Id_axKHhAUsS5Gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748027618271-9b2lstc4t1ilfloar36aij4knejg5her.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
