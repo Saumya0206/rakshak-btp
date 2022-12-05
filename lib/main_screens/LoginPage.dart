@@ -111,22 +111,18 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Login',
+                    'RAKSHAK Login',
                     style: TextStyle(fontSize: 50.0),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Welcome back,',
+                        'Login your details,',
                         style: TextStyle(fontSize: 30.0),
                       ),
                       Text(
-                        'please login',
-                        style: TextStyle(fontSize: 30.0),
-                      ),
-                      Text(
-                        'to your account',
+                        'to know about your health :)',
                         style: TextStyle(fontSize: 30.0),
                       ),
                     ],

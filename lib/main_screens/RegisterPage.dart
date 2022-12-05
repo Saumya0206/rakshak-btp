@@ -102,18 +102,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Register',
+                    'RAKSHAK',
                     style: TextStyle(fontSize: 50.0),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Lets get',
+                        'Register into Rakshak',
                         style: TextStyle(fontSize: 30.0),
                       ),
                       Text(
-                        'you on board',
+                        'to know about your health :)',
                         style: TextStyle(fontSize: 30.0),
                       ),
                     ],
