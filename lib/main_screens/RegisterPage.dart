@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rakshak/main_screens/Measurement.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/GoogleDone.dart';
 import 'package:rakshak/main_screens/LoginPage.dart';
@@ -303,7 +304,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, LoginPage.id);
+                          Navigator.pushNamed(context, Measurement.id);
                         },
                         child: Text(
                           ' Sign In',
