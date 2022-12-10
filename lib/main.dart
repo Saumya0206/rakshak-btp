@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rakshak/main_screens/HomePage.dart';
 import 'package:rakshak/main_screens/LoginPage.dart';
 import 'package:rakshak/main_screens/Measurement.dart';
+import 'package:rakshak/main_screens/TestPage.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/ForgotPassword.dart';
 import 'package:rakshak/main_screens/RegisterPage.dart';
@@ -30,7 +31,8 @@ class Home extends StatelessWidget {
 // initialRoute: RegisterPage.id,
 
 // for testing
-      initialRoute: HomePage.id,
+      // change this line to get any starting page you want
+      initialRoute: Measurement.id,
 
       routes: {
         HomePage.id: (context) => HomePage(),
@@ -39,6 +41,7 @@ class Home extends StatelessWidget {
         ForgotPassword.id: (context) => ForgotPassword(),
         Done.id: (context) => Done(),
         Measurement.id: (context) => Measurement(),
+        TestPage.id: (context) => TestPage()
       },
     ));
   }

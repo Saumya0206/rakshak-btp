@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:rakshak/main_screens/PopupResult.dart';
 
 class TestPage extends StatefulWidget {
+  static String id = '/TestPage';
+
   @override
   _TestPageState createState() => _TestPageState();
 }
