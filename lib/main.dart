@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rakshak/main_screens/HomePage.dart';
 import 'package:rakshak/main_screens/LoginPage.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/ForgotPassword.dart';
@@ -6,6 +7,7 @@ import 'package:rakshak/main_screens/RegisterPage.dart';
 
 // new code
 import 'package:firebase_core/firebase_core.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 void main() async {
   // new code
@@ -18,17 +20,25 @@ void main() async {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return FeatureDiscovery(
+        child: MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Abel'),
-      initialRoute: RegisterPage.id,
+
+// actual
+// initialRoute: RegisterPage.id,
+
+// for testing
+      initialRoute: HomePage.id,
+
       routes: {
+        HomePage.id: (context) => HomePage(),
         RegisterPage.id: (context) => RegisterPage(),
         LoginPage.id: (context) => LoginPage(),
         ForgotPassword.id: (context) => ForgotPassword(),
         Done.id: (context) => Done(),
       },
-    );
+    ));
   }
 }
 
