@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rakshak/main_screens/Measurement.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/GoogleDone.dart';
 import 'package:rakshak/main_screens/LoginPage.dart';
@@ -102,18 +103,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Register',
+                    'RAKSHAK',
                     style: TextStyle(fontSize: 50.0),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Lets get',
+                        'Register into Rakshak',
                         style: TextStyle(fontSize: 30.0),
                       ),
                       Text(
-                        'you on board',
+                        'to know about your health :)',
                         style: TextStyle(fontSize: 30.0),
                       ),
                     ],
@@ -303,7 +304,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, LoginPage.id);
+                          Navigator.pushNamed(context, Measurement.id);
                         },
                         child: Text(
                           ' Sign In',

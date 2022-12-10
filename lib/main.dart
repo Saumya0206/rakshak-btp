@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rakshak/main_screens/HomePage.dart';
 import 'package:rakshak/main_screens/LoginPage.dart';
+import 'package:rakshak/main_screens/Measurement.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/ForgotPassword.dart';
 import 'package:rakshak/main_screens/RegisterPage.dart';
@@ -37,6 +38,7 @@ class Home extends StatelessWidget {
         LoginPage.id: (context) => LoginPage(),
         ForgotPassword.id: (context) => ForgotPassword(),
         Done.id: (context) => Done(),
+        Measurement.id: (context) => Measurement(),
       },
     ));
   }
