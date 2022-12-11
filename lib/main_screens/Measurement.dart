@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:rakshak/main_screens/O2.dart';
 import 'package:rakshak/results_screen/ForgotPassword.dart';
 import 'package:rakshak/results_screen/GoogleDone.dart';
 import 'package:rakshak/main_screens/RegisterPage.dart';
@@ -117,7 +118,7 @@ class _MeasurementState extends State<Measurement> {
                       Material(
                         child: InkWell(
                           onTap: () {
-                            displayDialog(context);
+                            Navigator.pushNamed(context, O2.id);
                           },
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5.0),
