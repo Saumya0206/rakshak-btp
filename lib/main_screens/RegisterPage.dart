@@ -251,6 +251,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           onPressed: () {
                             onGoogleSignIn(context);
                           },
+
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -304,7 +305,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Measurement.id);
+                          Navigator.pushNamed(context, LoginPage.id);
                         },
                         child: Text(
                           ' Sign In',
