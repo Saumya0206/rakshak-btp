@@ -28,9 +28,10 @@ MAX30105 particleSensor;
 #define pulseWidth 411    // Options: 69, 118, 215, 411
 #define adcRange 4096     // Options: 2048, 4096, 8192, 16384
 
-#define bufferLength 25           // buffer length of 100 stores 4 seconds of samples running at 25sps
-uint16_t irBuffer[bufferLength];  // infrared LED sensor data
-uint16_t redBuffer[bufferLength]; // red LED sensor data
+#define bufferLength 25 // buffer length of 100 stores 4 seconds of samples running at 25sps
+// changed 16 -> 32
+uint32_t irBuffer[bufferLength];  // infrared LED sensor data
+uint32_t redBuffer[bufferLength]; // red LED sensor data
 
 int32_t spo2;          // SPO2 value
 int8_t validSPO2;      // indicator to show if the SPO2 calculation is valid
