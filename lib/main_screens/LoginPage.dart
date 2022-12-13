@@ -76,15 +76,11 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     Navigator.push(
-        context,
-        // test code
-        MaterialPageRoute(
-            builder: (context) => GoogleDone(_user, _googleSignIn))
-
-        // actual code
-        // MaterialPageRoute(
-        //     builder: (context) => GoogleDone(user, _googleSignIn))
-        );
+      context,
+      MaterialPageRoute(
+        builder: (context) => GoogleDone(_user, _googleSignIn),
+      ),
+    );
   }
 
   String emailText = 'Email doesn\'t match';

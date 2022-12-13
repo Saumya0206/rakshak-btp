@@ -7,6 +7,7 @@ import 'package:rakshak/main_screens/TestPage.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/ForgotPassword.dart';
 import 'package:rakshak/main_screens/RegisterPage.dart';
+import 'package:rakshak/main_screens/Connection.dart';
 
 // new code
 import 'package:firebase_core/firebase_core.dart';
@@ -44,7 +45,8 @@ class Home extends StatelessWidget {
           Done.id: (context) => Done(),
           Measurement.id: (context) => Measurement(),
           TestPage.id: (context) => TestPage(),
-          O2.id: (context) => O2()
+          O2.id: (context) => O2(),
+          Connection.id: (context) => Connection(),
         },
       ),
     );

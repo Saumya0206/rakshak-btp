@@ -3,6 +3,7 @@ import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:rakshak/main_screens/O2.dart';
+import 'package:rakshak/main_screens/Connection.dart';
 
 class HomePage extends StatefulWidget {
   static String id = "/HomePage";
@@ -67,10 +68,14 @@ class _HomePageState extends State<HomePage> {
             ),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => O2()));
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Connection(),
+                ),
+              );
             },
             child: const Text(
-              'Go to O2 page',
+              'Go to Connection page',
               style: TextStyle(color: Colors.white),
             ),
           ),
