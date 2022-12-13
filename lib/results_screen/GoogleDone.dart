@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rakshak/main_screens/HomePage.dart';
 
 // ignore: must_be_immutable
 class GoogleDone extends StatelessWidget {
@@ -63,8 +64,13 @@ class GoogleDone extends StatelessWidget {
               // shape: RoundedRectangleBorder(
               //     borderRadius: BorderRadius.circular(20)),
               onPressed: () {
-                _googleSignIn?.signOut();
-                Navigator.pop(context);
+                // Navigate to the homepage on press
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
+
+                // don't sign out on press
+                // _googleSignIn?.signOut();
+                // Navigator.pop(context);
               },
               child: Text('Google sign in Done!'),
             ),
