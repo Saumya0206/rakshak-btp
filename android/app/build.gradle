@@ -51,7 +51,8 @@ android {
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         
         // set to 21
-        minSdkVersion flutter.minSdkVersion
+        // set to 19 for flutter_blue
+        minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
