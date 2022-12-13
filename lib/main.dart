@@ -24,28 +24,30 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FeatureDiscovery(
-        child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Abel'),
+      recordStepsInSharedPreferences: false,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Abel'),
 
-// actual
-// initialRoute: RegisterPage.id,
+        // actual
+        // initialRoute: RegisterPage.id,
 
-// for testing
-      // change this line to get any starting page you want
-      initialRoute: RegisterPage.id,
+        // for testing
+        // change this line to get any starting page you want
+        initialRoute: RegisterPage.id,
 
-      routes: {
-        HomePage.id: (context) => HomePage(),
-        RegisterPage.id: (context) => RegisterPage(),
-        LoginPage.id: (context) => LoginPage(),
-        ForgotPassword.id: (context) => ForgotPassword(),
-        Done.id: (context) => Done(),
-        Measurement.id: (context) => Measurement(),
-        TestPage.id: (context) => TestPage(),
-        O2.id: (context) => O2()
-      },
-    ));
+        routes: {
+          HomePage.id: (context) => HomePage(),
+          RegisterPage.id: (context) => RegisterPage(),
+          LoginPage.id: (context) => LoginPage(),
+          ForgotPassword.id: (context) => ForgotPassword(),
+          Done.id: (context) => Done(),
+          Measurement.id: (context) => Measurement(),
+          TestPage.id: (context) => TestPage(),
+          O2.id: (context) => O2()
+        },
+      ),
+    );
   }
 }
 
