@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 // import 'package:flutter_blue/gen/flutterblue.pb.dart';
 
+import 'package:rakshak/main_screens/ConnectionDone.dart';
+
 class Connection extends StatelessWidget {
   static String id = "/connect";
 
@@ -85,8 +87,8 @@ class FindDevicesScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) {
                                   result.device.connect();
-                                  return Text(result.device.name);
-                                  // return DeviceScreen(device: result.device);
+                                  // return Text(result.device.name);
+                                  return ConnectionDone(result.device);
                                 },
                               ),
                             ),

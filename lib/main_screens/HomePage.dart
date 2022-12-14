@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:feature_discovery/feature_discovery.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:rakshak/main_screens/O2.dart';
-import 'package:rakshak/main_screens/Connection.dart';
+// import 'package:rakshak/main_screens/Connection.dart';
+import 'package:rakshak/main_screens/connection_serial/ConnectionSerial.dart';
 
 class HomePage extends StatefulWidget {
   static String id = "/HomePage";
@@ -70,7 +68,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Connection(),
+                  builder: (context) => ConnectionSerial(),
                 ),
               );
             },

@@ -1,3 +1,22 @@
+// // #include <HardwareSerial.h>
+// #include <SoftwareSerial.h>
+
+// void setup()
+// {
+//     Serial.begin(9600);
+//     // while (!Serial)
+//     ;
+// }
+
+// void loop()
+// {
+//     // if (Serial.available())
+//     // {
+//     // String inputString = Serial.readString();
+//     Serial.println("inputString");
+//     // }
+// }
+
 /*
 Hardware Connections (MAX30102 to Arduino):
   -5V = 5V (3.3V is allowed)
@@ -30,8 +49,8 @@ MAX30105 particleSensor;
 
 #define bufferLength 25 // buffer length of 100 stores 4 seconds of samples running at 25sps
 // changed 16 -> 32
-uint32_t irBuffer[bufferLength];  // infrared LED sensor data
-uint32_t redBuffer[bufferLength]; // red LED sensor data
+uint16_t irBuffer[bufferLength];  // infrared LED sensor data
+uint16_t redBuffer[bufferLength]; // red LED sensor data
 
 int32_t spo2;          // SPO2 value
 int8_t validSPO2;      // indicator to show if the SPO2 calculation is valid
@@ -47,9 +66,9 @@ byte function = OFF;
 
 void setup()
 {
-    //  Serial.begin(9600);
+    Serial.begin(9600);
     bluetooth.begin(9600);
-    // Serial.println(F("Device started"));
+    // Serial.println("Device started");
 
     // Initialize sensor
     while (!particleSensor.begin(Wire, I2C_SPEED_FAST)) // Use default I2C port, 400kHz speed
@@ -66,39 +85,48 @@ void setup()
 
 void loop()
 {
-    // Await the command to transmit
+    bluetooth.println("what");
     if (bluetooth.available())
     {
-        String command = bluetooth.readString();
-        //    Serial.println(command);
-        if (command == "B")
-        {
-            function = BP;
-            particleSensor.setup(ledBrightness, sampleAverageBP, ledMode, sampleRateBP, pulseWidth, adcRange);
-            bluetooth.println('B');
-        }
-        else if (command == "S")
-        {
-            function = PULSE_OXY_TEMPER;
-            particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
-            particleSensor.enableDIETEMPRDY(); // Enable the temp ready interrupt. This is required for temperature.
-            bluetooth.println('S');
-        }
-        else
-        {
-            function = OFF;
-            particleSensor.disableDIETEMPRDY();
-        }
+        Serial.println("available");
     }
+    else
+    {
+        Serial.println("not available");
+    }
+    // Await the command to transmit
+    // if (bluetooth.available())
+    // {
+    //     String command = bluetooth.readString();
+    //     //    Serial.println(command);
+    //     if (command == "B")
+    //     {
+    //         function = BP;
+    //         particleSensor.setup(ledBrightness, sampleAverageBP, ledMode, sampleRateBP, pulseWidth, adcRange);
+    //         bluetooth.println('B');
+    //     }
+    //     else if (command == "S")
+    //     {
+    //         function = PULSE_OXY_TEMPER;
+    //         particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+    //         particleSensor.enableDIETEMPRDY(); // Enable the temp ready interrupt. This is required for temperature.
+    //         bluetooth.println('S');
+    //     }
+    //     else
+    //     {
+    //         function = OFF;
+    //         particleSensor.disableDIETEMPRDY();
+    //     }
+    // }
 
-    if (function == BP)
-    {
-        transmitRawData();
-    }
-    else if (function == PULSE_OXY_TEMPER)
-    {
-        transmitCalculatedData();
-    }
+    // if (function == BP)
+    // {
+    //     transmitRawData();
+    // }
+    // else if (function == PULSE_OXY_TEMPER)
+    // {
+    //     transmitCalculatedData();
+    // }
 }
 
 void transmitCalculatedData()
