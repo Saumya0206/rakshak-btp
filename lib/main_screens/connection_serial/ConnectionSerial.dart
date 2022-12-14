@@ -36,7 +36,7 @@ class _ConnectionSerial extends State<ConnectionSerial> {
       if ((await FlutterBluetoothSerial.instance.isEnabled) ?? false) {
         return false;
       }
-      await Future.delayed(Duration(milliseconds: 0xDD));
+      await Future.delayed(const Duration(milliseconds: 0xDD));
       return true;
     }).then((_) {
       // Update the address field
