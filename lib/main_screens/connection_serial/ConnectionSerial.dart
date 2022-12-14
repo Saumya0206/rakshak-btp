@@ -227,7 +227,7 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => O2(),
+                      builder: (context) => O2(device: device),
                     ),
                   );
                 }

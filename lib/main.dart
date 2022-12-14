@@ -45,7 +45,7 @@ class Home extends StatelessWidget {
           Done.id: (context) => Done(),
           Measurement.id: (context) => Measurement(),
           TestPage.id: (context) => TestPage(),
-          O2.id: (context) => O2(),
+          // O2.id: (context) => O2(),
           Connection.id: (context) => Connection(),
         },
       ),

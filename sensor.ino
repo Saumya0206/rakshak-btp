@@ -85,39 +85,39 @@ void setup()
 
 void loop()
 {
-    bluetooth.println("what");
-    if (bluetooth.available())
-    {
-        Serial.println("available");
-    }
-    else
-    {
-        Serial.println("not available");
-    }
-    // Await the command to transmit
+    // bluetooth.println("what");
     // if (bluetooth.available())
     // {
-    //     String command = bluetooth.readString();
-    //     //    Serial.println(command);
-    //     if (command == "B")
-    //     {
-    //         function = BP;
-    //         particleSensor.setup(ledBrightness, sampleAverageBP, ledMode, sampleRateBP, pulseWidth, adcRange);
-    //         bluetooth.println('B');
-    //     }
-    //     else if (command == "S")
-    //     {
-    //         function = PULSE_OXY_TEMPER;
-    //         particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
-    //         particleSensor.enableDIETEMPRDY(); // Enable the temp ready interrupt. This is required for temperature.
-    //         bluetooth.println('S');
-    //     }
-    //     else
-    //     {
-    //         function = OFF;
-    //         particleSensor.disableDIETEMPRDY();
-    //     }
+    //     Serial.println("available");
     // }
+    // else
+    // {
+    //     Serial.println("not available");
+    // }
+    // Await the command to transmit
+    if (bluetooth.available())
+    {
+        String command = bluetooth.readString();
+        Serial.println(command);
+        // if (command == "B")
+        // {
+        //     function = BP;
+        //     particleSensor.setup(ledBrightness, sampleAverageBP, ledMode, sampleRateBP, pulseWidth, adcRange);
+        //     bluetooth.println('B');
+        // }
+        // else if (command == "S")
+        // {
+        //     function = PULSE_OXY_TEMPER;
+        //     particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+        //     particleSensor.enableDIETEMPRDY(); // Enable the temp ready interrupt. This is required for temperature.
+        //     bluetooth.println('S');
+        // }
+        // else
+        // {
+        //     function = OFF;
+        //     particleSensor.disableDIETEMPRDY();
+        // }
+    }
 
     // if (function == BP)
     // {
