@@ -31,7 +31,7 @@ class O2 extends StatefulWidget {
 
 class _O2State extends State<O2> with TickerProviderStateMixin {
   late AnimationController controller;
-  bool _showSpinner = false;
+  final bool _showSpinner = false;
   late int result;
 
   BluetoothConnection? connection;
@@ -46,19 +46,19 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 30),
+      duration: const Duration(seconds: 30),
     );
 
     _animationController.addListener(() => setState(() {}));
     TickerFuture tickerFuture = _animationController.repeat();
-    tickerFuture.timeout(Duration(seconds: 3 * 10), onTimeout: () {
+    tickerFuture.timeout(const Duration(seconds: 3 * 10), onTimeout: () {
       _animationController.forward(from: 0);
       _animationController.stop(canceled: true);
     });
 
-    BluetoothConnection.toAddress(widget.device.address).then((_connection) {
+    BluetoothConnection.toAddress(widget.device.address).then((connection) {
       print('Connected to the device');
-      connection = _connection;
+      connection = connection;
       setState(() {
         isConnecting = false;
         isDisconnecting = false;
@@ -69,7 +69,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   void _sendMessage(String text) async {
     text = text.trim();
 
-    if (text.length > 0) {
+    if (text.isNotEmpty) {
       try {
         connection!.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
         await connection!.output.allSent;
