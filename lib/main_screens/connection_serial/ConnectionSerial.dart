@@ -1,3 +1,5 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -23,6 +25,8 @@ class _ConnectionSerial extends State<ConnectionSerial> {
   @override
   void initState() {
     super.initState();
+
+    // FlutterBluetoothSerial.instance.cancelDiscovery().then((result) {});
 
     // Get current state
     FlutterBluetoothSerial.instance.state.then((state) {
@@ -65,6 +69,13 @@ class _ConnectionSerial extends State<ConnectionSerial> {
         _discoverableTimeoutSecondsLeft = 0;
       });
     });
+  }
+
+  @override
+  void dispose() {
+    FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
+    _discoverableTimeoutTimer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -115,7 +126,7 @@ class DiscoveryPage extends StatefulWidget {
   const DiscoveryPage({this.start = true});
 
   @override
-  _DiscoveryPage createState() => new _DiscoveryPage();
+  _DiscoveryPage createState() => _DiscoveryPage();
 }
 
 class _DiscoveryPage extends State<DiscoveryPage> {
@@ -171,7 +182,6 @@ class _DiscoveryPage extends State<DiscoveryPage> {
   void dispose() {
     // Avoid memory leak (`setState` after dispose) and cancel discovery
     _streamSubscription?.cancel();
-
     super.dispose();
   }
 
@@ -186,14 +196,14 @@ class _DiscoveryPage extends State<DiscoveryPage> {
           isDiscovering
               ? FittedBox(
                   child: Container(
-                    margin: new EdgeInsets.all(16.0),
+                    margin: const EdgeInsets.all(16.0),
                     child: const CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   ),
                 )
               : IconButton(
-                  icon: Icon(Icons.replay),
+                  icon: const Icon(Icons.replay),
                   onPressed: _restartDiscovery,
                 )
         ],

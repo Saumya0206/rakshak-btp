@@ -77,6 +77,23 @@ class _HomePageState extends State<HomePage> {
               style: TextStyle(color: Colors.white),
             ),
           ),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.green),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConnectionSerial(),
+                ),
+              );
+            },
+            child: const Text(
+              'Go to Stethoscope page',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

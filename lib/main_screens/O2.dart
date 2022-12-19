@@ -1,16 +1,18 @@
 // ignore_for_file: unused_import, file_names
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'dart:math';
-import 'package:rakshak/main_screens/PopupResult.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:rakshak/main_screens/PopupResult.dart';
+import 'package:rakshak/main_screens/sensor/ReadSensorData.dart';
+
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 // bool _wrongEmail = false;
 // bool _wrongPassword = false;
@@ -35,6 +37,8 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   late int result;
 
   BluetoothConnection? connection;
+  late ReadSensorData readSensorData;
+
   bool isConnecting = true;
   bool isDisconnecting = false;
   bool get isConnected => (connection?.isConnected ?? false);
@@ -56,9 +60,11 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
       _animationController.stop(canceled: true);
     });
 
-    BluetoothConnection.toAddress(widget.device.address).then((connection) {
-      print('Connected to the device');
-      connection = connection;
+    BluetoothConnection.toAddress(widget.device.address).then((_connection) {
+      print('Positive. Connected to the device');
+      connection = _connection;
+      readSensorData = ReadSensorData(_connection);
+      readSensorData.startListening();
       setState(() {
         isConnecting = false;
         isDisconnecting = false;
@@ -68,12 +74,15 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
 
   void _sendMessage(String text) async {
     text = text.trim();
+    print(text);
 
     if (text.isNotEmpty) {
       try {
-        connection!.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
+        connection?.output.add(Uint8List.fromList(utf8.encode(text)));
+        // connection!.output.add(Uint8List.fromList(utf8.encode(text)));
         await connection!.output.allSent;
       } catch (e) {
+        print(e);
         // Ignore error, but notify state
         setState(() {});
       }
@@ -95,6 +104,13 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   @override
   void dispose() {
     controller.dispose();
+
+    if (isConnected) {
+      isDisconnecting = true;
+      connection?.dispose();
+      connection = null;
+    }
+
     super.dispose();
   }
 
@@ -213,7 +229,8 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                                 MaterialStateProperty.all(Colors.green)),
                         onPressed: () {
                           displayDialog(context);
-                          _sendMessage("Your O2 saturation is: $result");
+                          // _sendMessage("Your O2 saturation is: $result");
+                          _sendMessage("S");
                         },
                         child: const Text(
                           'Done',

@@ -76,7 +76,7 @@ void setup()
         // Serial.println(F("Sensor missing."));
         delay(1000);
     }
-    // Serial.println(F("Sensor available."));
+    Serial.println(F("Sensor available."));
 
     particleSensor.setup();                    // Configure sensor with default settings
     particleSensor.setPulseAmplitudeRed(0x0A); // Turn Red LED to low to indicate sensor is running
@@ -94,44 +94,49 @@ void loop()
     // {
     //     Serial.println("not available");
     // }
+    // Serial.println(bluetooth.available());
     // Await the command to transmit
     if (bluetooth.available())
     {
         String command = bluetooth.readString();
         Serial.println(command);
-        // if (command == "B")
-        // {
-        //     function = BP;
-        //     particleSensor.setup(ledBrightness, sampleAverageBP, ledMode, sampleRateBP, pulseWidth, adcRange);
-        //     bluetooth.println('B');
-        // }
-        // else if (command == "S")
-        // {
-        //     function = PULSE_OXY_TEMPER;
-        //     particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
-        //     particleSensor.enableDIETEMPRDY(); // Enable the temp ready interrupt. This is required for temperature.
-        //     bluetooth.println('S');
-        // }
-        // else
-        // {
-        //     function = OFF;
-        //     particleSensor.disableDIETEMPRDY();
-        // }
+        Serial.println(command == "S");
+        if (command == "B")
+        {
+            function = BP;
+            particleSensor.setup(ledBrightness, sampleAverageBP, ledMode, sampleRateBP, pulseWidth, adcRange);
+            bluetooth.println('B');
+        }
+        else if (command == "S")
+        {
+            Serial.println("1");
+            function = PULSE_OXY_TEMPER;
+            particleSensor.setup(ledBrightness, sampleAverage, ledMode, sampleRate, pulseWidth, adcRange);
+            particleSensor.enableDIETEMPRDY(); // Enable the temp ready interrupt. This is required for temperature.
+            bluetooth.println('S');
+        }
+        else
+        {
+            function = OFF;
+            particleSensor.disableDIETEMPRDY();
+        }
     }
 
-    // if (function == BP)
-    // {
-    //     transmitRawData();
-    // }
-    // else if (function == PULSE_OXY_TEMPER)
-    // {
-    //     transmitCalculatedData();
-    // }
+    if (function == BP)
+    {
+        transmitRawData();
+    }
+    else if (function == PULSE_OXY_TEMPER)
+    {
+        transmitCalculatedData();
+    }
 }
 
 void transmitCalculatedData()
 {
     // read the first 100 samples, and determine the signal range
+    Serial.println(particleSensor.available());
+    Serial.println(particleSensor.getRed());
     for (byte i = 0; i < bufferLength; i++)
     {
         while (particleSensor.available() == false)
@@ -142,12 +147,14 @@ void transmitCalculatedData()
         particleSensor.nextSample();
     }
     // calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
+    Serial.println("step1"); // debug statement
     maxim_heart_rate_and_oxygen_saturation(irBuffer, bufferLength, redBuffer, &spo2, &validSPO2, &heartRate, &validHeartRate);
     if (validSPO2 == 1 && validHeartRate == 1)
     {
         temper = (float)particleSensor.readTemperature();
         temper = ((int)(temper * 100)) / 100.0;
     }
+    Serial.println("step2"); // debug statement;
     sendFormattedFrame(validSPO2 & validHeartRate);
 
     // Continuously taking samples.  Heart rate and SpO2 are calculated every 1 second
@@ -183,15 +190,19 @@ void transmitCalculatedData()
 
 int sendFormattedFrame(byte valid)
 {
+    // Serial.println("step3"); // debug statement;
     char data[14];
     if (valid)
     {
+        Serial.println("step4"); // debug statement;
         sprintf(data, "^%d|%d|%d$", (int)(temper * 10), (int)(heartRate * PULSE_MULTI), spo2);
     }
     else
     {
         sprintf(data, "^0|0|0$");
     }
+    Serial.println(data); // debug statement
+    bluetooth.print(data);
     bluetooth.print(data);
 }
 

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:rakshak/main_screens/sensor/Max30102.dart';
@@ -17,10 +19,26 @@ class ReadSensorData {
     connection = d;
   }
 
+  void startListening() {
+    print("well");
+    connection.input!.listen(_onDataReceived).onDone(() {
+      if (isDisconnecting) {
+        print('Disconnecting locally!');
+      } else {
+        print('Disconnected remotely!');
+      }
+    });
+  }
+
   // is the device still connected
   bool get isConnected => (connection.isConnected ? true : false);
 
-  void _onDataReceived(String data) {}
+  void _onDataReceived(Uint8List data) {
+    // int timer = 5;
+    // bool setupSuccessful = false;
+    // List<ByteData> buffer = List.filled(1024, );
+    print('Data Incoming: ${ascii.decode(data)}');
+  }
 
   List<Max30102> parseData(String data) {
     List<Max30102> allFrames =
