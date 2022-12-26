@@ -1,12 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rakshak/main_screens/O2.dart';
-import 'package:rakshak/results_screen/ForgotPassword.dart';
-import 'package:rakshak/results_screen/GoogleDone.dart';
-import 'package:rakshak/main_screens/RegisterPage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../results_screen/Done.dart';
-import 'package:rakshak/main_screens/TestPage.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'dart:math';
 import 'package:rakshak/main_screens/PopupResult.dart';
@@ -16,7 +11,7 @@ import 'package:flutter/services.dart';
 // bool _wrongPassword = false;
 
 // new code: User
-late User _user;
+late User loggedInUser;
 
 // ignore: must_be_immutable
 class Measurement extends StatefulWidget {
@@ -41,14 +36,34 @@ class _MeasurementState extends State<Measurement> {
         });
   }
 
+  // Get current logged in user
+  final _auth = FirebaseAuth.instance;
+  void getCurrentUser() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 80,
-        title: Text('R A K S H A K', style: TextStyle(fontSize: 40)),
+        title: const Text('R A K S H A K', style: TextStyle(fontSize: 40)),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 93, 23, 105),
+        backgroundColor: const Color.fromARGB(255, 93, 23, 105),
         foregroundColor: Colors.white,
         elevation: 1.0,
       ),
@@ -64,7 +79,7 @@ class _MeasurementState extends State<Measurement> {
               child: Image.asset('assets/images/background.png'),
             ),
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                   top: 60.0, bottom: 70.0, left: 20.0, right: 20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -77,14 +92,30 @@ class _MeasurementState extends State<Measurement> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Name: ',
-                        style: TextStyle(fontSize: 25.0),
+                      Row(
+                        children: [
+                          const Text(
+                            'Name: ',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                          Text(
+                            loggedInUser.displayName.toString(),
+                            style: const TextStyle(fontSize: 25.0),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 30),
-                      Text(
-                        'Email: ',
-                        style: TextStyle(fontSize: 25.0),
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          const Text(
+                            'Email: ',
+                            style: TextStyle(fontSize: 25.0),
+                          ),
+                          Text(
+                            loggedInUser.email.toString(),
+                            style: const TextStyle(fontSize: 25.0),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -141,17 +172,17 @@ class _MeasurementState extends State<Measurement> {
         height: 70,
         child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed, // Fixed
-            backgroundColor:
-                Color.fromARGB(255, 93, 23, 105), // <-- This works for fixed
-            selectedItemColor: Color.fromARGB(255, 31, 1, 38),
-            unselectedItemColor: Color.fromARGB(255, 164, 100, 175),
+            backgroundColor: const Color.fromARGB(
+                255, 93, 23, 105), // <-- This works for fixed
+            selectedItemColor: const Color.fromARGB(255, 31, 1, 38),
+            unselectedItemColor: const Color.fromARGB(255, 164, 100, 175),
             items: [
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.library_books_rounded),
                 label: 'Manual',
                 backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark_add_rounded),
                 label: 'Reading',
                 backgroundColor: Color.fromARGB(255, 93, 23, 105),

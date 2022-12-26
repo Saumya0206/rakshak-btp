@@ -3,6 +3,9 @@ import 'package:feature_discovery/feature_discovery.dart';
 // import 'package:rakshak/main_screens/Connection.dart';
 import 'package:rakshak/main_screens/connection_serial/ConnectionSerial.dart';
 
+// Telestethoscope
+import 'package:rakshak/main_screens/telestethoscope/RecordPage.dart';
+
 class HomePage extends StatefulWidget {
   static String id = "/HomePage";
 
@@ -85,7 +88,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ConnectionSerial(),
+                  builder: (context) => RecordPage(),
                 ),
               );
             },
