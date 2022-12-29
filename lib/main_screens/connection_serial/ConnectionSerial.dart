@@ -82,7 +82,16 @@ class _ConnectionSerial extends State<ConnectionSerial> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Connection"),
+        // title: const Text("Bluetooth"),
+        toolbarHeight: 80,
+        title: const Text('Bluetooth', style: TextStyle(fontSize: 30)),
+        backgroundColor: const Color.fromARGB(255, 93, 23, 105),
+        foregroundColor: Colors.white,
+        elevation: 1.0,
+        // leading: IconButton(
+        //   onPressed: () {},
+        //   icon: Icon(Icons.bluetooth),
+        // ),
       ),
       body: (_btState.isEnabled
           ? DiscoveryPage()
@@ -99,7 +108,7 @@ class BluetoothOffScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: const Color.fromARGB(255, 93, 23, 105),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -189,9 +198,18 @@ class _DiscoveryPage extends State<DiscoveryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // toolbarHeight: 80,
+        // title: const Text('Find Devices', style: TextStyle(fontSize: 30)),
+        backgroundColor: Color.fromARGB(255, 134, 57, 147),
+        foregroundColor: Colors.white,
+        // elevation: 1.0,
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.bluetooth),
+        ),
         title: isDiscovering
-            ? const Text('Discovering devices')
-            : const Text('Discovered devices'),
+            ? const Text('Discovering devices', style: TextStyle(fontSize: 20))
+            : const Text('Discovered devices', style: TextStyle(fontSize: 20)),
         actions: <Widget>[
           isDiscovering
               ? FittedBox(
@@ -276,6 +294,64 @@ class _DiscoveryPage extends State<DiscoveryPage> {
           );
         },
       ),
+      bottomNavigationBar: SizedBox(
+        height: 300,
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 20.0, bottom: 20.0, left: 30.0, right: 30.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                              height: 160,
+                              width: 160,
+                              child: Image.asset('assets/images/bluetooth.png',
+                                  fit: BoxFit.cover)),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 45.0),
+                                child: Text(
+                                  'Turn on your blutooth & Click on the bluetooth device to pair up',
+                                  style: TextStyle(fontSize: 10.0),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        // ),
+        // items: const <BottomNavigationBarItem>[
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.home),
+        //   label: 'Home',
+        //   backgroundColor: Color.fromARGB(255, 93, 23, 105),
+        // ),
+      ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

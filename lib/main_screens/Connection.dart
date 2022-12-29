@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-// import 'package:modal_progress_hud/modal_progress_hud.dart';
 // import 'package:flutter_blue/gen/flutterblue.pb.dart';
 
 import 'package:rakshak/main_screens/ConnectionDone.dart';
@@ -163,7 +162,9 @@ class FindDevicesScreen extends StatelessWidget {
               if (snapshot.data!) {
                 return FloatingActionButton(
                   child: Icon(Icons.stop),
-                  onPressed: () => FlutterBluePlus.instance.stopScan(),
+                  onPressed: () => {
+                    FlutterBluePlus.instance.stopScan(),
+                  },
                   backgroundColor: Colors.red,
                 );
               } else {

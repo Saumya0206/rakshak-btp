@@ -4,6 +4,7 @@ import 'package:rakshak/main_screens/LoginPage.dart';
 import 'package:rakshak/main_screens/Measurement.dart';
 import 'package:rakshak/main_screens/O2.dart';
 import 'package:rakshak/main_screens/TestPage.dart';
+import 'package:rakshak/main_screens/connection_serial/ConnectionSerial.dart';
 import 'package:rakshak/results_screen/Done.dart';
 import 'package:rakshak/results_screen/ForgotPassword.dart';
 import 'package:rakshak/main_screens/RegisterPage.dart';
@@ -35,7 +36,7 @@ class Home extends StatelessWidget {
 
         // for testing
         // change this line to get any starting page you want
-        initialRoute: Connection.id,
+        initialRoute: Measurement.id,
 
         routes: {
           HomePage.id: (context) => HomePage(),
@@ -47,6 +48,7 @@ class Home extends StatelessWidget {
           TestPage.id: (context) => TestPage(),
           // O2.id: (context) => O2(),
           Connection.id: (context) => Connection(),
+          // ConnectionSerial.id:(context) => ConnectionSerial(),
         },
       ),
     );
