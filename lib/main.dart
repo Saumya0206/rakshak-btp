@@ -35,7 +35,7 @@ class Home extends StatelessWidget {
 
         // for testing
         // change this line to get any starting page you want
-        initialRoute: RegisterPage.id,
+        initialRoute: Connection.id,
 
         routes: {
           HomePage.id: (context) => HomePage(),

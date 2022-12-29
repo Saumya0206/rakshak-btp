@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+// import 'package:modal_progress_hud/modal_progress_hud.dart';
 // import 'package:flutter_blue/gen/flutterblue.pb.dart';
 
 import 'package:rakshak/main_screens/ConnectionDone.dart';
@@ -63,13 +64,62 @@ class FindDevicesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Find Devices'),
+        toolbarHeight: 80,
+        title: const Text('Find Devices', style: TextStyle(fontSize: 30)),
+        backgroundColor: const Color.fromARGB(255, 93, 23, 105),
+        foregroundColor: Colors.white,
+        elevation: 1.0,
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.bluetooth),
+        ),
       ),
       body: SizedBox(
-        height: 200,
-        width: 100,
-        child: Column(
+        // height: 200,
+        // width: 100,
+        child: Stack(
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 30.0, bottom: 70.0, left: 20.0, right: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                              height: 200,
+                              width: 200,
+                              child: Image.asset('assets/images/bluetooth.png',
+                                  fit: BoxFit.cover)),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 40.0),
+                                child: Text(
+                                  'Turn on your blutooth & click on the search button for a bluetooth device',
+                                  style: TextStyle(fontSize: 10.0),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             StreamBuilder<List<ScanResult>>(
               stream: FlutterBluePlus.instance.scanResults,
               initialData: [],
