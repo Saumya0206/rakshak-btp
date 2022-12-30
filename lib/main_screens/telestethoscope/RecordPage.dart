@@ -32,6 +32,7 @@ typedef _Fn = void Function();
 //const theSource = AudioSource.voiceDownlink;
 
 const theSource = AudioSource.microphone;
+late bool connected;
 
 /// Example app.
 class RecordPage extends StatefulWidget {
