@@ -28,12 +28,15 @@ class ReadSensorData {
   late List<Max30102> allReadingsList =
       List.filled(READING_BATCH_SIZE + 5, Max30102(0, 0, 0), growable: true);
 
-  ReadSensorData(BluetoothConnection d) {
+  // function to be called when a reading is obtained
+  late VoidCallback onDataRead;
+
+  ReadSensorData(BluetoothConnection d, VoidCallback func) {
     connection = d;
+    onDataRead = func;
   }
 
   void startListening() {
-    print("well");
     connection.input!.listen(_onDataReceived).onDone(() {
       if (isDisconnecting) {
         print('Disconnecting locally!');
@@ -164,10 +167,12 @@ class ReadSensorData {
       int temp = int.parse(m.group(1).toString());
       int pulse = int.parse(m.group(2).toString());
       int spo2 = int.parse(m.group(3).toString());
+
       // ignore null values
-      // if (temp == 0 || pulse == 0 || spo2 == 0) {
-      // continue;
-      // }
+      if (temp == 0 || pulse == 0 || spo2 == 0) {
+        continue;
+      }
+
       print("$pulse $spo2 $temp");
       allFrames.add(Max30102(spo2, pulse, temp / 10.0));
     }

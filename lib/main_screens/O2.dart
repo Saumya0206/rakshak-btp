@@ -14,7 +14,6 @@ import 'package:rakshak/main_screens/sensor/ReadSensorData.dart';
 import 'dart:async';
 import 'dart:convert';
 
-// new code: User
 late User _user;
 
 // ignore: must_be_immutable
@@ -41,26 +40,31 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   bool get isConnected => (connection?.isConnected ?? false);
 
   late AnimationController _animationController;
+  int progress = 0;
+
+  void _onDataRead() {
+    progress++;
+  }
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 30),
-    );
+    // _animationController = AnimationController(
+    //   vsync: this,
+    //   duration: const Duration(seconds: 30),
+    // );
 
-    _animationController.addListener(() => setState(() {}));
-    TickerFuture tickerFuture = _animationController.repeat();
-    tickerFuture.timeout(const Duration(seconds: 3 * 10), onTimeout: () {
-      _animationController.forward(from: 0);
-      _animationController.stop(canceled: true);
-    });
+    // _animationController.addListener(() => setState(() {}));
+    // TickerFuture tickerFuture = _animationController.repeat();
+    // tickerFuture.timeout(const Duration(seconds: 3 * 10), onTimeout: () {
+    //   _animationController.forward(from: 0);
+    //   _animationController.stop(canceled: true);
+    // });
 
     BluetoothConnection.toAddress(widget.device.address).then((_connection) {
       print('Positive. Connected to the device');
       connection = _connection;
-      readSensorData = ReadSensorData(_connection);
+      readSensorData = ReadSensorData(_connection, _onDataRead);
       readSensorData.startListening();
       setState(() {
         isConnecting = false;
@@ -125,14 +129,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 80,
-      //   title: Text('R A K S H A K', style: TextStyle(fontSize: 40)),
-      //   centerTitle: true,
-      //   backgroundColor: Color.fromARGB(255, 93, 23, 105),
-      //   foregroundColor: Colors.white,
-      //   elevation: 1.0,
-      // ),
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: ModalProgressHUD(
@@ -142,7 +138,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
           children: [
             const Align(
               alignment: Alignment.topRight,
-              // child: Image.asset('assets/images/background.png'),
             ),
             Padding(
               padding: const EdgeInsets.only(
