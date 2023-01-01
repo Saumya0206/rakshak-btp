@@ -14,9 +14,6 @@ import 'package:rakshak/main_screens/sensor/ReadSensorData.dart';
 import 'dart:async';
 import 'dart:convert';
 
-// bool _wrongEmail = false;
-// bool _wrongPassword = false;
-
 // new code: User
 late User _user;
 

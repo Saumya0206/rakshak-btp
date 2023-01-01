@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:math';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -8,18 +8,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:rakshak/main_screens/sensor/Max30102.dart';
 
-import 'package:characters/characters.dart';
-
 class ReadSensorData {
   final bool DEBUG_MODE = false;
   final int READING_BATCH_SIZE = 30;
   final int AVG_WINDOW_SIZE = 4; // what is this?
+
   int secondsCount = 0; // helps in ignoring first 3 seconds of reading
+
   bool uploadWhenGenerated = false;
+
   late BluetoothConnection connection;
   bool isConnecting = false;
   bool isDisconnecting = false;
+
   String partialFrame = "";
+
+  int readingsCount = 0; // number of valid readings
+  // list of all valid readings
+  late List<Max30102> allReadingsList =
+      List.filled(READING_BATCH_SIZE + 5, Max30102(0, 0, 0), growable: true);
 
   ReadSensorData(BluetoothConnection d) {
     connection = d;
@@ -41,11 +48,7 @@ class ReadSensorData {
 
   void _onDataReceived(Uint8List data) {
     // int timer = 5;
-    // bool setupSuccessful = false;
-    // List<ByteData> buffer = List.filled(1024, );
     int numBytes = ascii.decode(data).length;
-    // print(secondsCount);
-    // print(READING_BATCH_SIZE + 5);
     // if (secondsCount < READING_BATCH_SIZE + 5) {
     if (secondsCount > 2) {
       List<String> chars = ascii.decode(data).split('');
@@ -60,8 +63,30 @@ class ReadSensorData {
       // generate new string without any whitespace
       String newData = chars.join().replaceAll(' ', '');
 
-      List<Max30102> currReading = parseData(newData);
+      List<Max30102> currReadings = parseData(newData);
       // print("Current Reading:  ${currReading.toString()}");
+
+      int validReadingsIndex = clearInvalidReadings(currReadings, true);
+      Max30102 avgReading = Max30102(0, 0, 0);
+
+      if (validReadingsIndex != -1) {
+        allReadingsList.addAll(
+            currReadings.sublist(validReadingsIndex, currReadings.length));
+        readingsCount += currReadings.length - validReadingsIndex;
+
+        for (int i = readingsCount - 1;
+            i >= max(readingsCount - AVG_WINDOW_SIZE, 0);
+            --i) {
+          avgReading.add(allReadingsList[i]);
+        }
+        if (readingsCount > 0) {
+          avgReading.divBy(min(readingsCount, AVG_WINDOW_SIZE));
+        }
+      }
+
+      if (secondsCount >= 5 && validReadingsIndex != -1) {
+        // publishProgress(avgReading);
+      }
     }
     sleep(const Duration(milliseconds: 1000));
     secondsCount++;
@@ -148,5 +173,42 @@ class ReadSensorData {
     }
 
     return allFrames;
+  }
+
+  int clearInvalidReadings(List<Max30102> readingsArr, bool strict) {
+    int validReadingsIndex = -1;
+    int lastValidPulse = 0;
+    int lastValidSpo2 = 0;
+    double lastValidTemper = 0;
+
+    for (int i = 0; i < readingsArr.length; ++i) {
+      if (strict
+          ? readingsArr[i].getPulse() > 30 && readingsArr[i].getPulse() < 220
+          : readingsArr[i].getPulse() > 0) {
+        lastValidPulse = readingsArr[i].getPulse();
+        validReadingsIndex = validReadingsIndex != -1 ? validReadingsIndex : i;
+      } else if (lastValidPulse > 0) {
+        readingsArr[i].setPulse(lastValidPulse);
+      }
+
+      if (strict
+          ? readingsArr[i].getSpo2() > 60 && readingsArr[i].getSpo2() < 100
+          : readingsArr[i].getSpo2() > 0) {
+        lastValidSpo2 = readingsArr[i].getSpo2();
+        validReadingsIndex = validReadingsIndex != -1 ? validReadingsIndex : i;
+      } else if (lastValidSpo2 > 0) {
+        readingsArr[i].setSpo2(lastValidSpo2);
+      }
+
+      if (strict
+          ? readingsArr[i].getTemp() > 20 && readingsArr[i].getTemp() < 42
+          : readingsArr[i].getTemp() > 0) {
+        lastValidTemper = readingsArr[i].getTemp();
+        validReadingsIndex = validReadingsIndex != -1 ? validReadingsIndex : i;
+      } else if (lastValidTemper > 0) {
+        readingsArr[i].setTemp(lastValidTemper);
+      }
+    }
+    return validReadingsIndex;
   }
 }

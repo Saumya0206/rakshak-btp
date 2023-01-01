@@ -14,6 +14,12 @@ class Max30102 {
     this.temp = temp;
   }
 
+  void add(Max30102 other) {
+    this.pulse += other.pulse;
+    this.spo2 += other.spo2;
+    this.temp += other.temp;
+  }
+
   Max30102 setSpo2(int spo2) {
     this.spo2 = spo2;
     return this;
@@ -39,5 +45,11 @@ class Max30102 {
 
   double getTemp() {
     return temp;
+  }
+
+  void divBy(int x) {
+    this.pulse = (this.pulse / x).floor();
+    this.spo2 = (this.spo2 / x).floor();
+    this.temp = ((this.temp / x * 100)) / 100.0;
   }
 }
