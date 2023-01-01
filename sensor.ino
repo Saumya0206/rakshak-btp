@@ -201,9 +201,9 @@ int sendFormattedFrame(byte valid)
     {
         sprintf(data, "^0|0|0$");
     }
-    Serial.println(data); // debug statement
-    bluetooth.print(data);
-    bluetooth.print(data);
+    // Serial.println(data); // debug statement
+    // bluetooth.print(data);
+    // bluetooth.print(data);
 }
 
 void transmitRawData()

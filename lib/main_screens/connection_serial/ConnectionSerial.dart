@@ -245,13 +245,13 @@ class _DiscoveryPage extends State<DiscoveryPage> {
                   print('Unbonding from ${device.address}...');
                   await FlutterBluetoothSerial.instance
                       .removeDeviceBondWithAddress(address);
-                  print('Unbonding from ${device.address} has succed');
+                  print('Unbonding from ${device.address} has succeeded');
                 } else {
                   print('Bonding with ${device.address}...');
                   bonded = (await FlutterBluetoothSerial.instance
                       .bondDeviceAtAddress(address))!;
                   print(
-                      'Bonding with ${device.address} has ${bonded ? 'succed' : 'failed'}.');
+                      'Bonding with ${device.address} has ${bonded ? 'succeeded' : 'failed'}.');
                   Navigator.push(
                     context,
                     MaterialPageRoute(

@@ -40,31 +40,33 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   bool get isConnected => (connection?.isConnected ?? false);
 
   late AnimationController _animationController;
-  int progress = 0;
 
-  void _onDataRead() {
+  int progress = 0;
+  void _onRead() {
     progress++;
+    print(
+        "Here is progress: ${progress / 30}. Here is connection state: $isConnected");
   }
 
   @override
   void initState() {
     super.initState();
-    // _animationController = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(seconds: 30),
-    // );
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 30),
+    );
 
-    // _animationController.addListener(() => setState(() {}));
-    // TickerFuture tickerFuture = _animationController.repeat();
-    // tickerFuture.timeout(const Duration(seconds: 3 * 10), onTimeout: () {
-    //   _animationController.forward(from: 0);
-    //   _animationController.stop(canceled: true);
-    // });
+    _animationController.addListener(() => setState(() {}));
+    TickerFuture tickerFuture = _animationController.repeat();
+    tickerFuture.timeout(const Duration(seconds: 3 * 10), onTimeout: () {
+      _animationController.forward(from: 0);
+      _animationController.stop(canceled: true);
+    });
 
     BluetoothConnection.toAddress(widget.device.address).then((_connection) {
       print('Positive. Connected to the device');
       connection = _connection;
-      readSensorData = ReadSensorData(_connection, _onDataRead);
+      readSensorData = ReadSensorData(_connection, _onRead);
       readSensorData.startListening();
       setState(() {
         isConnecting = false;
@@ -138,6 +140,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
           children: [
             const Align(
               alignment: Alignment.topRight,
+              // child: Image.asset('assets/images/background.png'),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -208,7 +211,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                         valueColor: const AlwaysStoppedAnimation<Color>(
                           Color.fromARGB(255, 45, 15, 106),
                         ),
-                        value: _animationController.value,
+                        value: !isConnected ? 0.0 : progress / 30,
                         semanticsLabel: 'Linear progress indicator',
                       ),
                     ],

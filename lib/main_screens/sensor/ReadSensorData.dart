@@ -28,15 +28,15 @@ class ReadSensorData {
   late List<Max30102> allReadingsList =
       List.filled(READING_BATCH_SIZE + 5, Max30102(0, 0, 0), growable: true);
 
-  // function to be called when a reading is obtained
-  late VoidCallback onDataRead;
+  late VoidCallback _onRead;
 
   ReadSensorData(BluetoothConnection d, VoidCallback func) {
     connection = d;
-    onDataRead = func;
+    _onRead = func;
   }
 
   void startListening() {
+    print("well");
     connection.input!.listen(_onDataReceived).onDone(() {
       if (isDisconnecting) {
         print('Disconnecting locally!');
@@ -50,6 +50,7 @@ class ReadSensorData {
   bool get isConnected => (connection.isConnected ? true : false);
 
   void _onDataReceived(Uint8List data) {
+    print("hello");
     // int timer = 5;
     int numBytes = ascii.decode(data).length;
     // if (secondsCount < READING_BATCH_SIZE + 5) {
@@ -70,6 +71,7 @@ class ReadSensorData {
       // print("Current Reading:  ${currReading.toString()}");
 
       int validReadingsIndex = clearInvalidReadings(currReadings, true);
+      print("$secondsCount $validReadingsIndex");
       Max30102 avgReading = Max30102(0, 0, 0);
 
       if (validReadingsIndex != -1) {
@@ -89,6 +91,7 @@ class ReadSensorData {
 
       if (secondsCount >= 5 && validReadingsIndex != -1) {
         // publishProgress(avgReading);
+        _onRead();
       }
     }
     sleep(const Duration(milliseconds: 1000));
