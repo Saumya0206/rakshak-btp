@@ -195,8 +195,8 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
         builder: (BuildContext dialogContext) {
           return MyPopup(spo2Avg);
         });
-
-    Navigator.pop(context);
+    print("xyz");
+    // Navigator.pop(context);
   }
 
   @override
