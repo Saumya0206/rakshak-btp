@@ -150,18 +150,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     }
   }
 
-  // @override
-  // void initState() {
-  //   controller = AnimationController(
-  //     vsync: this,
-  //     duration: const Duration(seconds: 30),
-  //   )..addListener(() {
-  //       setState(() {});
-  //     });
-  //   controller.repeat(reverse: false);
-  //   super.initState();
-  // }
-
   @override
   void dispose() {
     controller.dispose();

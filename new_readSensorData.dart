@@ -31,14 +31,14 @@ class ReadSensorData {
   late VoidCallback _onRead;
   late Function _updateData;
 
-  ReadSensorData(
-      BluetoothConnection d, VoidCallback func, Function updateData) {
+  ReadSensorData(BluetoothConnection d, VoidCallback func) {
     connection = d;
     _onRead = func;
-    _updateData = updateData;
+    // _updateData = updateData;
   }
 
   void startListening() {
+    print("well");
     connection.input!.listen(_onDataReceived).onDone(() {
       if (isDisconnecting) {
         print('Disconnecting locally!');
@@ -90,12 +90,13 @@ class ReadSensorData {
       }
 
       if (secondsCount >= 5 && validReadingsIndex != -1) {
+        // publishProgress(avgReading);
         _onRead();
-        _updateData(
-          avgReading.spo2.toString(),
-          avgReading.temp.toString(),
-          avgReading.pulse.toString(),
-        );
+        // _updateData(
+        //   avgReading.spo2.toString(),
+        //   avgReading.temp.toString(),
+        //   avgReading.pulse.toString(),
+        // );
       }
     }
     sleep(const Duration(milliseconds: 1000));
