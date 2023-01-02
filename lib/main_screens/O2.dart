@@ -65,6 +65,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   bool isConnecting = true;
   bool isDisconnecting = false;
   bool get isConnected => (connection?.isConnected ?? false);
+  bool collectingData = false;
 
   late AnimationController _animationController;
 
@@ -85,8 +86,9 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   late double tempAvg = 0;
   int counter = 0;
   void _onDataReceive(String spo2, String temp, String pulse) {
-    print("in _onDataReceive");
-    if (counter < spo2Readouts.length) {
+    // print("in _onDataReceive");
+    print(counter);
+    if (counter < 5) {
       spo2Readouts[counter] = int.parse(spo2);
       spo2Avg += int.parse(spo2);
       pulseReadouts[counter] = int.parse(pulse);
@@ -94,6 +96,14 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
       tempReadouts[counter] = double.parse(temp);
       tempAvg += double.parse(temp);
       counter++;
+    } else {
+      spo2Avg = (spo2Avg / 30).floor();
+      pulseAvg = (pulseAvg / 30).floor();
+      tempAvg = (tempAvg / 30);
+      connection!.close();
+      print("inside this condition");
+      collectingData = false;
+      displayDialog(context);
     }
   }
 
@@ -124,6 +134,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     BluetoothConnection.toAddress(widget.device.address).then((_connection) {
       print('Positive. Connected to the device');
       connection = _connection;
+      collectingData = true;
       readSensorData = ReadSensorData(_connection, _onRead, _onDataReceive);
       readSensorData.startListening();
       setState(() {
@@ -176,14 +187,16 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   }
 
   void displayDialog(BuildContext context) {
-    Random random = Random();
-    result = random.nextInt(100);
-
+    // Random random = Random();
+    // result = random.nextInt(100);
+    print("inside displayDialog");
     showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
-          return MyPopup(result);
+          return MyPopup(spo2Avg);
         });
+
+    Navigator.pop(context);
   }
 
   @override
@@ -280,19 +293,19 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                   Column(
                     children: [
                       ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.green)),
-                        onPressed: () {
-                          displayDialog(context);
-                          // _sendMessage("Your O2 saturation is: $result");
-                          _sendMessage("S");
-                        },
-                        child: const Text(
-                          'Done',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  collectingData ? Colors.grey : Colors.green)),
+                          onPressed: collectingData
+                              ? null
+                              : () {
+                                  // start collecting data
+                                  _sendMessage("S");
+                                },
+                          child: const Text(
+                            'Start',
+                            style: TextStyle(color: Colors.white),
+                          ))
                     ],
                   ),
                 ],
