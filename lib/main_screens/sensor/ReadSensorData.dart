@@ -71,7 +71,7 @@ class ReadSensorData {
       // print("Current Reading:  ${currReading.toString()}");
 
       int validReadingsIndex = clearInvalidReadings(currReadings, true);
-      print("$secondsCount $validReadingsIndex");
+      // print("$secondsCount $validReadingsIndex");
       Max30102 avgReading = Max30102(0, 0, 0);
 
       if (validReadingsIndex != -1) {
@@ -82,8 +82,12 @@ class ReadSensorData {
         for (int i = readingsCount - 1;
             i >= max(readingsCount - AVG_WINDOW_SIZE, 0);
             --i) {
+          print("this runs");
+          print("adding: ${allReadingsList[i]}");
           avgReading.add(allReadingsList[i]);
+          print("avg: $avgReading");
         }
+        print("avgReading:spo2 value: ${avgReading.spo2}");
         if (readingsCount > 0) {
           avgReading.divBy(min(readingsCount, AVG_WINDOW_SIZE));
         }

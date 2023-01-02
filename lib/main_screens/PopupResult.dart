@@ -5,9 +5,11 @@ class MyPopup extends StatelessWidget {
   String title = "Thank You!";
   String message = "Your average O2 saturation is: ";
   late int _result;
+  late VoidCallback _uploadData;
 
-  MyPopup(int result) {
+  MyPopup(int result, VoidCallback uploadData) {
     _result = result;
+    _uploadData = uploadData;
   }
 
   @override
@@ -25,7 +27,7 @@ class MyPopup extends StatelessWidget {
         TextButton(
           onPressed: () {
             Navigator.pop(context, 'OK');
-            Navigator.pop(context);
+            _uploadData();
           },
           child: Text('OK'),
         )

@@ -34,24 +34,12 @@ class _TestPageState extends State<TestPage> {
         .catchError((error) => print("Could not add student. Error: $error"));
   }
 
-  void displayDialog(BuildContext context) {
-    Random random = new Random();
-    result = random.nextInt(100);
-
-    showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return MyPopup(result);
-        });
-    addReading();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          displayDialog(context);
+          // displayDialog(context);
         },
         child: Text('click'),
         backgroundColor: Colors.red[600],

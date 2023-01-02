@@ -52,4 +52,9 @@ class Max30102 {
     this.spo2 = (this.spo2 / x).floor();
     this.temp = ((this.temp / x * 100)) / 100.0;
   }
+
+  @override
+  String toString() {
+    return "spo2:$spo2 temp:$temp pulse:$pulse";
+  }
 }

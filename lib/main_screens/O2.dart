@@ -24,25 +24,6 @@ CollectionReference satReading =
 late User _user;
 bool DEBUG_MODE = false;
 
-// function to add a new reading
-Future<void> addStudent(name, number, value, context) {
-  EasyLoading.show(status: 'loading...');
-  return satReading.add({
-    'name': name,
-    'number': number,
-    'timestamp': Timestamp.now(),
-    'value': value
-  }).then((value) {
-    EasyLoading.showSuccess('Great Success!');
-    Navigator.pop(context);
-    EasyLoading.dismiss();
-  }).catchError((error) {
-    EasyLoading.showError('Failed with Error');
-    Navigator.pop(context);
-    EasyLoading.dismiss();
-  });
-}
-
 // ignore: must_be_immutable
 class O2 extends StatefulWidget {
   final BluetoothDevice device;
@@ -91,6 +72,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     if (counter < 5) {
       spo2Readouts[counter] = int.parse(spo2);
       spo2Avg += int.parse(spo2);
+      print("$spo2 $spo2Avg");
       pulseReadouts[counter] = int.parse(pulse);
       pulseAvg += int.parse(pulse);
       tempReadouts[counter] = double.parse(temp);
@@ -105,6 +87,30 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
       collectingData = false;
       displayDialog(context);
     }
+  }
+
+  // function to add a new reading
+  Future<void> addReading(name, number, value) {
+    EasyLoading.show(status: 'Uploading...');
+    return satReading.add({
+      'name': name,
+      'number': number,
+      'timestamp': Timestamp.now(),
+      'value': value
+    }).then((value) {
+      EasyLoading.showSuccess('Great Success!');
+      Navigator.pop(context);
+      EasyLoading.dismiss();
+    }).catchError((error) {
+      EasyLoading.showError('Failed with Error');
+      Navigator.pop(context);
+      EasyLoading.dismiss();
+      Navigator.pop(context);
+    });
+  }
+
+  void _uploadData() {
+    addReading("Shivam Kumar", "9161110768", spo2Avg);
   }
 
   @override
@@ -134,7 +140,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     BluetoothConnection.toAddress(widget.device.address).then((_connection) {
       print('Positive. Connected to the device');
       connection = _connection;
-      collectingData = true;
+      // collectingData = true;
       readSensorData = ReadSensorData(_connection, _onRead, _onDataReceive);
       readSensorData.startListening();
       setState(() {
@@ -193,7 +199,10 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
-          return MyPopup(spo2Avg);
+          return MyPopup(
+            spo2Avg,
+            _uploadData,
+          );
         });
     print("xyz");
     // Navigator.pop(context);
@@ -297,7 +306,9 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                               backgroundColor: MaterialStateProperty.all(
                                   collectingData ? Colors.grey : Colors.green)),
                           onPressed: collectingData
-                              ? null
+                              ? () {
+                                  collectingData = true;
+                                }
                               : () {
                                   // start collecting data
                                   _sendMessage("S");

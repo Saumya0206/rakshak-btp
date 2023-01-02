@@ -23,17 +23,6 @@ class _MeasurementState extends State<Measurement> {
   bool _showSpinner = false;
   late int result;
 
-  void displayDialog(BuildContext context) {
-    Random random = new Random();
-    result = random.nextInt(100);
-
-    showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          return MyPopup(result);
-        });
-  }
-
   // Get current logged in user
   final _auth = FirebaseAuth.instance;
   void getCurrentUser() async {
