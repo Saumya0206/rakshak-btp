@@ -44,6 +44,7 @@ dependencies:
   flutter_bluetooth_serial: ^0.3.2
   scoped_model: ^2.0.0-nullsafety.0
   feature_discovery: ^0.14.1 # old version: ^0.13.0+2
+  flutter_easyloading: ^3.0.5
 
   # flutter sound imports
   flutter_sound: ^9.2.13

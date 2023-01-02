@@ -50,8 +50,6 @@ class ReadSensorData {
   bool get isConnected => (connection.isConnected ? true : false);
 
   void _onDataReceived(Uint8List data) {
-    print("hello");
-    // int timer = 5;
     int numBytes = ascii.decode(data).length;
     // if (secondsCount < READING_BATCH_SIZE + 5) {
     if (secondsCount > 2) {

@@ -10,11 +10,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:rakshak/main_screens/PopupResult.dart';
 import 'package:rakshak/main_screens/sensor/ReadSensorData.dart';
+import 'package:rakshak/main_screens/sensor/uploadTask.dart';
 
 import 'dart:async';
 import 'dart:convert';
 
+// database
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart'; // for loading screen
+
+CollectionReference satReading =
+    FirebaseFirestore.instance.collection('saturation');
+
 late User _user;
+
+// function to add a new reading
+Future<void> addStudent(name, number, value, context) {
+  EasyLoading.show(status: 'loading...');
+  return satReading.add({
+    'name': name,
+    'number': number,
+    'timestamp': Timestamp.now(),
+    'value': value
+  }).then((value) {
+    EasyLoading.showSuccess('Great Success!');
+    Navigator.pop(context);
+    EasyLoading.dismiss();
+  }).catchError((error) {
+    EasyLoading.showError('Failed with Error');
+    Navigator.pop(context);
+    EasyLoading.dismiss();
+  });
+}
 
 // ignore: must_be_immutable
 class O2 extends StatefulWidget {
@@ -41,16 +68,26 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
 
   late AnimationController _animationController;
 
+  late Timer _timer;
+
   int progress = 0;
   void _onRead() {
     progress++;
-    print(
-        "Here is progress: ${progress / 30}. Here is connection state: $isConnected");
+    print("Here is progress: ${progress / 30}. Connection state: $isConnected");
   }
 
   @override
   void initState() {
     super.initState();
+
+    // easy loading timer
+    EasyLoading.addStatusCallback((status) {
+      print('EasyLoading Status $status');
+      if (status == EasyLoadingStatus.dismiss) {
+        _timer.cancel();
+      }
+    });
+
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 30),
@@ -211,7 +248,10 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                         valueColor: const AlwaysStoppedAnimation<Color>(
                           Color.fromARGB(255, 45, 15, 106),
                         ),
-                        value: !isConnected ? 0.0 : progress / 30,
+                        value: !isConnected
+                            ? 0.0
+                            : double.parse(
+                                (progress * 1.00 / 30).toStringAsFixed(1)),
                         semanticsLabel: 'Linear progress indicator',
                       ),
                     ],
@@ -225,7 +265,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                         onPressed: () {
                           displayDialog(context);
                           // _sendMessage("Your O2 saturation is: $result");
-                          _sendMessage("S");
                         },
                         child: const Text(
                           'Done',
