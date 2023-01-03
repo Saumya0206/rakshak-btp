@@ -183,24 +183,29 @@ class _SimpleRecorderState extends State<RecordPage> {
       return Column(
         children: [
           Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
+            margin: const EdgeInsets.only(
+                top: 20.0, bottom: 10.0, left: 30.0, right: 30.0),
+            padding: const EdgeInsets.only(
+                top: 10.0, bottom: 10.0, left: 50.0, right: 50.0),
             height: 80,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: const Color(0xFFFAF0E6),
               border: Border.all(
-                color: Colors.indigo,
-                width: 3,
+                color: const Color.fromARGB(255, 93, 23, 105),
+                width: 2,
               ),
             ),
             child: Row(children: [
               ElevatedButton(
                 onPressed: getRecorderFn(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
                 child: Text(_mRecorder!.isRecording ? 'Stop' : 'Record'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _mRecorder!.isRecording
+                      ? Colors.red
+                      : const Color.fromARGB(255, 93, 23, 105), //Text Color
+                ),
               ),
               const SizedBox(
                 width: 20,
@@ -211,24 +216,29 @@ class _SimpleRecorderState extends State<RecordPage> {
             ]),
           ),
           Container(
-            margin: const EdgeInsets.all(3),
-            padding: const EdgeInsets.all(3),
+            margin: const EdgeInsets.only(
+                top: 10.0, bottom: 20.0, left: 30.0, right: 30.0),
+            padding: const EdgeInsets.only(
+                top: 10.0, bottom: 10.0, left: 50.0, right: 50.0),
             height: 80,
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: const Color(0xFFFAF0E6),
               border: Border.all(
-                color: Colors.indigo,
-                width: 3,
+                color: const Color.fromARGB(255, 93, 23, 105),
+                width: 2,
               ),
             ),
             child: Row(children: [
               ElevatedButton(
                 onPressed: getPlaybackFn(),
-                //color: Colors.white,
-                //disabledColor: Colors.grey,
                 child: Text(_mPlayer!.isPlaying ? 'Stop' : 'Play'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _mPlayer!.isPlaying
+                      ? Colors.red
+                      : const Color.fromARGB(255, 93, 23, 105), //Text Color
+                ),
               ),
               const SizedBox(
                 width: 20,
@@ -238,16 +248,128 @@ class _SimpleRecorderState extends State<RecordPage> {
                   : 'Player is stopped'),
             ]),
           ),
+          const SizedBox(height: 40),
+          Container(
+            // body: new Center(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 150, // <-- Your width
+                  height: 60, // <-- Your height
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          //to set border radius to button
+                          borderRadius: BorderRadius.circular(10)),
+                      backgroundColor:
+                          const Color.fromARGB(255, 93, 23, 105), //Text Color
+                    ),
+                    child: new Text(
+                      "Reading",
+                      style: new TextStyle(fontSize: 17.0, color: Colors.white),
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+            // ),
+            // child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.stretch,
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     SizedBox(
+            //         width: 150, // <-- Your width
+            //         height: 100, // <-- Your height
+            //         child: ElevatedButton(
+            //           onPressed: () {},
+            //           child: Text(
+            //             'Reading',
+            //             style: TextStyle(fontSize: 20.0),
+            //           ),
+            //           style: ElevatedButton.styleFrom(
+            //             shape: RoundedRectangleBorder(
+            //                 //to set border radius to button
+            //                 borderRadius: BorderRadius.circular(30)),
+            //             backgroundColor:
+            //                 const Color.fromARGB(255, 93, 23, 105), //Text Color
+            //           ),
+            //         ))
+            //   ],
+            // ),
+          )
         ],
       );
     }
 
     return Scaffold(
-      backgroundColor: Colors.blue,
+      // backgroundColor: Colors.blue,
       appBar: AppBar(
-        title: const Text('Simple Recorder'),
+        toolbarHeight: 80,
+        title: const Text('Record your heartbeats',
+            style: TextStyle(fontSize: 25)),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 93, 23, 105),
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.record_voice_over),
+          ),
+        ],
+        // elevation: 1.0,
       ),
       body: makeBody(),
+      bottomNavigationBar: SizedBox(
+        height: 300,
+        child: Stack(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(
+                  top: 20.0, bottom: 20.0, left: 23.0, right: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: SizedBox(
+                              height: 150,
+                              width: 150,
+                              child: Image.asset('assets/images/heart-rate.png',
+                                  fit: BoxFit.cover)),
+                        ),
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 44.0),
+                                child: Text(
+                                  'Record your heartbeat using telestethoscope get your pulse reading',
+                                  style: TextStyle(fontSize: 10.0),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
