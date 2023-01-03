@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, file_names
+// ignore_for_file: unused_import, file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -112,6 +112,8 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   void _uploadData() {
     addReading("Shivam Kumar", "9161110768", spo2Avg);
   }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -291,12 +293,19 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                         valueColor: const AlwaysStoppedAnimation<Color>(
                           Color.fromARGB(255, 45, 15, 106),
                         ),
-                        value: !isConnected
-                            ? 0.0
-                            : double.parse(
-                                (progress * 1.00 / 30).toStringAsFixed(1)),
+                        value: null,
+                        // value: !isConnected
+                        //     ? 0.0
+                        //     : double.parse(
+                        //         (progress * 1.00 / 30).toStringAsFixed(1)),
                         semanticsLabel: 'Linear progress indicator',
                       ),
+                      Column(children: [
+                        Text(
+                          "${(progress * 1.00 / 30).floor() * 100}",
+                          style: TextStyle(fontSize: 10),
+                        )
+                      ]),
                     ],
                   ),
                   Column(

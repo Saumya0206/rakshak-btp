@@ -109,19 +109,21 @@ class BluetoothOffScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 93, 23, 105),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const Icon(
-            Icons.bluetooth_disabled,
-            size: 200.0,
-            color: Colors.white54,
+      body: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Icon(
+                Icons.bluetooth_disabled,
+                size: 200.0,
+                color: Colors.white54,
+              ),
+              Text(
+                'Bluetooth Adapter is ${state != BluetoothState.STATE_OFF ? state.toString().substring(15) : 'not available'}.',
+              ),
+            ],
           ),
-          Text(
-            'Bluetooth Adapter is ${state != null ? state.toString().substring(15) : 'not available'}.',
-          ),
-        ],
-      ),
+          alignment: Alignment.center),
       // Text("data"),
     );
   }

@@ -71,6 +71,11 @@ class ReadSensorData {
       // print("Current Reading:  ${currReading.toString()}");
 
       int validReadingsIndex = clearInvalidReadings(currReadings, true);
+      print("===starting loop===");
+      for (int i = 0; i < currReadings.length; i++) {
+        print("$i: ${currReadings[i]}");
+      }
+      print("===ending loop====");
       // print("$secondsCount $validReadingsIndex");
       Max30102 avgReading = Max30102(0, 0, 0);
 
@@ -82,12 +87,12 @@ class ReadSensorData {
         for (int i = readingsCount - 1;
             i >= max(readingsCount - AVG_WINDOW_SIZE, 0);
             --i) {
-          print("this runs");
-          print("adding: ${allReadingsList[i]}");
+          // print("this runs");
+          // print("adding: ${allReadingsList[i]}");
           avgReading.add(allReadingsList[i]);
-          print("avg: $avgReading");
+          // print("avg: $avgReading");
         }
-        print("avgReading:spo2 value: ${avgReading.spo2}");
+        // print("avgReading:spo2 value: ${avgReading.spo2}");
         if (readingsCount > 0) {
           avgReading.divBy(min(readingsCount, AVG_WINDOW_SIZE));
         }
@@ -181,10 +186,12 @@ class ReadSensorData {
 
       // ignore null values
       if (temp == 0 || pulse == 0 || spo2 == 0) {
+        // print("found null value");
         continue;
       }
 
       print("$pulse $spo2 $temp");
+      // print("New: ${Max30102(spo2, pulse, temp / 10.0)}");
       allFrames.add(Max30102(spo2, pulse, temp / 10.0));
     }
 
