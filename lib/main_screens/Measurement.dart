@@ -83,10 +83,10 @@ class _MeasurementState extends State<Measurement> {
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
-                          // Text(
-                          //   loggedInUser.displayName.toString(),
-                          //   style: const TextStyle(fontSize: 25.0),
-                          // ),
+                          Text(
+                            loggedInUser.displayName.toString(),
+                            style: const TextStyle(fontSize: 25.0),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 30),
@@ -97,10 +97,10 @@ class _MeasurementState extends State<Measurement> {
                             style: TextStyle(
                                 fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
-                          // Text(
-                          //   loggedInUser.email.toString(),
-                          //   style: const TextStyle(fontSize: 25.0),
-                          // ),
+                          Text(
+                            loggedInUser.email.toString(),
+                            style: const TextStyle(fontSize: 25.0),
+                          ),
                         ],
                       ),
                     ],
