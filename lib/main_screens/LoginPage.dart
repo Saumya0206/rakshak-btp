@@ -104,226 +104,225 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.only(
                   top: 60.0, bottom: 20.0, left: 20.0, right: 20.0),
               child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Login',
-                      style: TextStyle(fontSize: 50.0),
-                    ),
-                    Text(
-                      'RAKSHAK Login',
-                      style: TextStyle(fontSize: 50.0),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Login your details,',
-                          style: TextStyle(fontSize: 30.0),
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Text(
+                  //   'Login',
+                  //   style: TextStyle(fontSize: 50.0),
+                  // ),
+                  Text(
+                    'RAKSHAK Login',
+                    style: TextStyle(fontSize: 50.0),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Login your details,',
+                        style: TextStyle(fontSize: 25.0),
+                      ),
+                      Text(
+                        'to know about your health :)',
+                        style: TextStyle(fontSize: 25.0),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) {
+                          email = value;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                          labelText: 'Email',
+                          errorText: _wrongEmail ? emailText : null,
                         ),
-                        Text('to know about your health :)'),
-                        Column(
-                          children: [
-                            TextField(
-                              keyboardType: TextInputType.emailAddress,
-                              onChanged: (value) {
-                                email = value;
-                              },
-                              decoration: InputDecoration(
-                                hintText: 'Email',
-                                labelText: 'Email',
-                                errorText: _wrongEmail ? emailText : null,
-                              ),
-                            ),
-                            SizedBox(height: 20.0),
-                            TextField(
-                              obscureText: true,
-                              keyboardType: TextInputType.visiblePassword,
-                              onChanged: (value) {
-                                password = value;
-                              },
-                              decoration: InputDecoration(
-                                hintText: 'Password',
-                                labelText: 'Password',
-                                errorText: _wrongPassword ? passwordText : null,
-                              ),
-                            ),
-                            SizedBox(height: 10.0),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, ForgotPassword.id);
-                                },
-                                child: Text(
-                                  'Forgot Password?',
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.blue),
-                                ),
-                              ),
-                            ),
-                          ],
+                      ),
+                      SizedBox(height: 20.0),
+                      TextField(
+                        obscureText: true,
+                        keyboardType: TextInputType.visiblePassword,
+                        onChanged: (value) {
+                          password = value;
+                        },
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          labelText: 'Password',
+                          errorText: _wrongPassword ? passwordText : null,
                         ),
-                        ElevatedButton(
-                          // padding: EdgeInsets.symmetric(vertical: 10.0),
-                          // color: Color(0xff447def),
-                          onPressed: () async {
-                            setState(() {
-                              _showSpinner = true;
-                            });
-                            try {
-                              setState(() {
-                                _wrongEmail = false;
-                                _wrongPassword = false;
-                              });
-                              final newUser =
-                                  await _auth.signInWithEmailAndPassword(
-                                      email: email, password: password);
-                              if (newUser != null) {
-                                Navigator.pushNamed(context, Done.id);
-                              }
-                            } catch (e) {
-                              // new code
-                              print(e);
-                              setState(() {
-                                emailText = 'User doesn\'t exist';
-                                passwordText = 'Please check your email';
-
-                                _wrongPassword = true;
-                                _wrongEmail = true;
-                              });
-
-                              // old code
-                              // print(e.code);
-                              // if (e.code == 'ERROR_WRONG_PASSWORD') {
-                              //   setState(() {
-                              //     _wrongPassword = true;
-                              //   });
-                              // } else {
-                              //   setState(() {
-                              //     emailText = 'User doesn\'t exist';
-                              //     passwordText = 'Please check your email';
-
-                              //     _wrongPassword = true;
-                              //     _wrongEmail = true;
-                              //   });
-                              // }
-                            }
+                      ),
+                      SizedBox(height: 20.0),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, ForgotPassword.id);
                           },
                           child: Text(
-                            'Login',
+                            'Forgot Password?',
                             style:
-                                TextStyle(fontSize: 25.0, color: Colors.white),
+                                TextStyle(fontSize: 20.0, color: Colors.blue),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Container(
-                                height: 1.0,
-                                width: 60.0,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            Text(
-                              'Or',
-                              style: TextStyle(fontSize: 25.0),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Container(
-                                height: 1.0,
-                                width: 60.0,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ElevatedButton(
-                                // padding: EdgeInsets.symmetric(vertical: 5.0),
-                                // color: Colors.white,
-                                // shape: ContinuousRectangleBorder(
-                                //   side:
-                                //       BorderSide(width: 0.5, color: Colors.grey[400]),
-                                // ),
-                                onPressed: () {
-                                  onGoogleSignIn(context);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/images/google.png',
-                                        fit: BoxFit.contain,
-                                        width: 40.0,
-                                        height: 40.0),
-                                    Text(
-                                      'Google',
-                                      style: TextStyle(
-                                          fontSize: 25.0, color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 20.0),
-                            Expanded(
-                              child: ElevatedButton(
-                                // padding: EdgeInsets.symmetric(vertical: 5.0),
-                                // color: Colors.white,
-                                // shape: ContinuousRectangleBorder(
-                                //   side:
-                                //       BorderSide(width: 0.5, color: Colors.grey[400]),
-                                // ),
-                                onPressed: () {
-                                  //TODO: Implement facebook functionality
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/images/facebook.png',
-                                        fit: BoxFit.cover,
-                                        width: 40.0,
-                                        height: 40.0),
-                                    Text(
-                                      'Facebook',
-                                      style: TextStyle(
-                                          fontSize: 25.0, color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Don\'t have an account?',
-                              style: TextStyle(fontSize: 25.0),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, RegisterPage.id);
-                              },
-                              child: Text(
-                                ' Sign Up',
-                                style: TextStyle(
-                                    fontSize: 25.0, color: Colors.blue),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
+                    // padding: EdgeInsets.symmetric(vertical: 10.0),
+                    // color: Color(0xff447def),
+                    onPressed: () async {
+                      setState(() {
+                        _showSpinner = true;
+                      });
+                      try {
+                        setState(() {
+                          _wrongEmail = false;
+                          _wrongPassword = false;
+                        });
+                        final newUser = await _auth.signInWithEmailAndPassword(
+                            email: email, password: password);
+                        if (newUser != null) {
+                          Navigator.pushNamed(context, Done.id);
+                        }
+                      } catch (e) {
+                        // new code
+                        print(e);
+                        setState(() {
+                          emailText = 'User doesn\'t exist';
+                          passwordText = 'Please check your email';
+
+                          _wrongPassword = true;
+                          _wrongEmail = true;
+                        });
+
+                        // old code
+                        // print(e.code);
+                        // if (e.code == 'ERROR_WRONG_PASSWORD') {
+                        //   setState(() {
+                        //     _wrongPassword = true;
+                        //   });
+                        // } else {
+                        //   setState(() {
+                        //     emailText = 'User doesn\'t exist';
+                        //     passwordText = 'Please check your email';
+
+                        //     _wrongPassword = true;
+                        //     _wrongEmail = true;
+                        //   });
+                        // }
+                      }
+                    },
+                    child: Text(
+                      'Login',
+                      style: TextStyle(fontSize: 25.0, color: Colors.white),
                     ),
-                  ]),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          height: 1.0,
+                          width: 60.0,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        'Or',
+                        style: TextStyle(fontSize: 25.0),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Container(
+                          height: 1.0,
+                          width: 60.0,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          // padding: EdgeInsets.symmetric(vertical: 5.0),
+                          // color: Colors.white,
+                          // shape: ContinuousRectangleBorder(
+                          //   side:
+                          //       BorderSide(width: 0.5, color: Colors.grey[400]),
+                          // ),
+                          onPressed: () {
+                            onGoogleSignIn(context);
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/images/google.png',
+                                  fit: BoxFit.contain,
+                                  width: 40.0,
+                                  height: 40.0),
+                              Text(
+                                'Google',
+                                style: TextStyle(
+                                    fontSize: 25.0, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20.0),
+                      Expanded(
+                        child: ElevatedButton(
+                          // padding: EdgeInsets.symmetric(vertical: 5.0),
+                          // color: Colors.white,
+                          // shape: ContinuousRectangleBorder(
+                          //   side:
+                          //       BorderSide(width: 0.5, color: Colors.grey[400]),
+                          // ),
+                          onPressed: () {
+                            //TODO: Implement facebook functionality
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/images/facebook.png',
+                                  fit: BoxFit.cover, width: 40.0, height: 40.0),
+                              Text(
+                                'Facebook',
+                                style: TextStyle(
+                                    fontSize: 25.0, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Don\'t have an account?',
+                        style: TextStyle(fontSize: 25.0),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, RegisterPage.id);
+                        },
+                        child: Text(
+                          ' Sign Up',
+                          style: TextStyle(fontSize: 25.0, color: Colors.blue),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              // ]),
             )
           ],
         ),
