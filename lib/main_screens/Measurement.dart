@@ -51,7 +51,7 @@ class _MeasurementState extends State<Measurement> {
         toolbarHeight: 80,
         title: const Text('R A K S H A K', style: TextStyle(fontSize: 40)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 93, 23, 105),
+        backgroundColor: const Color.fromARGB(255, 114, 38, 128),
         foregroundColor: Colors.white,
         elevation: 1.0,
       ),
@@ -80,12 +80,13 @@ class _MeasurementState extends State<Measurement> {
                         children: [
                           const Text(
                             'Name: ',
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(
+                                fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            loggedInUser.displayName.toString(),
-                            style: const TextStyle(fontSize: 25.0),
-                          ),
+                          // Text(
+                          //   loggedInUser.displayName.toString(),
+                          //   style: const TextStyle(fontSize: 25.0),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 30),
@@ -93,12 +94,13 @@ class _MeasurementState extends State<Measurement> {
                         children: [
                           const Text(
                             'Email: ',
-                            style: TextStyle(fontSize: 25.0),
+                            style: TextStyle(
+                                fontSize: 25.0, fontWeight: FontWeight.bold),
                           ),
-                          Text(
-                            loggedInUser.email.toString(),
-                            style: const TextStyle(fontSize: 25.0),
-                          ),
+                          // Text(
+                          //   loggedInUser.email.toString(),
+                          //   style: const TextStyle(fontSize: 25.0),
+                          // ),
                         ],
                       ),
                     ],
@@ -158,19 +160,24 @@ class _MeasurementState extends State<Measurement> {
         height: 70,
         child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed, // Fixed
-            backgroundColor: const Color.fromARGB(255, 93, 23, 105),
-            selectedItemColor: const Color.fromARGB(255, 31, 1, 38),
-            unselectedItemColor: const Color.fromARGB(255, 164, 100, 175),
+            backgroundColor: Color.fromARGB(255, 114, 38, 128),
+            selectedItemColor: Color.fromARGB(255, 0, 0, 0),
+            unselectedItemColor: Color.fromARGB(255, 185, 131, 195),
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.library_books_rounded),
                 label: 'Manual',
-                backgroundColor: Color.fromARGB(255, 93, 23, 105),
+                // backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.bookmark_add_rounded),
                 label: 'Reading',
-                backgroundColor: Color.fromARGB(255, 93, 23, 105),
+                // backgroundColor: Color.fromARGB(255, 93, 23, 105),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                // backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
               // ],
               // currentIndex: _selectedIndex,
