@@ -21,6 +21,8 @@ class ReadSensorData {
   bool isConnecting = false;
   bool isDisconnecting = false;
 
+  int currentIdx = 0;
+
   String partialFrame = "";
 
   int readingsCount = 0; // number of valid readings
@@ -71,11 +73,11 @@ class ReadSensorData {
       // print("Current Reading:  ${currReading.toString()}");
 
       int validReadingsIndex = clearInvalidReadings(currReadings, true);
-      print("===starting loop===");
-      for (int i = 0; i < currReadings.length; i++) {
-        print("$i: ${currReadings[i]}");
-      }
-      print("===ending loop====");
+      // print("===starting loop===");
+      // for (int i = 0; i < currReadings.length; i++) {
+      //   print("$i: ${currReadings[i]}");
+      // }
+      // print("===ending loop====");
       // print("$secondsCount $validReadingsIndex");
       Max30102 avgReading = Max30102(0, 0, 0);
 
@@ -192,7 +194,7 @@ class ReadSensorData {
 
       print("$pulse $spo2 $temp");
       // print("New: ${Max30102(spo2, pulse, temp / 10.0)}");
-      allFrames.add(Max30102(spo2, pulse, temp / 10.0));
+      allFrames[currentIdx] = (Max30102(spo2, pulse, temp / 10.0));
     }
 
     return allFrames;

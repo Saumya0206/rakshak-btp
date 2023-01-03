@@ -55,7 +55,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   int progress = 0;
   void _onRead() {
     progress++;
-    print("Here is progress: ${progress / 30}. Connection state: $isConnected");
+    // print("Here is progress: ${progress / 30}. Connection state: $isConnected");
   }
 
   // store the data for upload
@@ -79,9 +79,9 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
       tempAvg += double.parse(temp);
       counter++;
     } else {
-      spo2Avg = (spo2Avg / 30).floor();
-      pulseAvg = (pulseAvg / 30).floor();
-      tempAvg = (tempAvg / 30);
+      spo2Avg = (spo2Avg / 5).floor();
+      pulseAvg = (pulseAvg / 5).floor();
+      tempAvg = (tempAvg / 5);
       connection!.close();
       print("inside this condition");
       collectingData = false;
@@ -287,25 +287,24 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
                         'O2:',
                         style: TextStyle(fontSize: 20),
                       ),
-                      LinearProgressIndicator(
-                        backgroundColor:
-                            const Color.fromARGB(255, 170, 147, 216),
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          Color.fromARGB(255, 45, 15, 106),
-                        ),
-                        value: null,
-                        // value: !isConnected
-                        //     ? 0.0
-                        //     : double.parse(
-                        //         (progress * 1.00 / 30).toStringAsFixed(1)),
-                        semanticsLabel: 'Linear progress indicator',
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          LinearProgressIndicator(
+                            backgroundColor:
+                                const Color.fromARGB(255, 170, 147, 216),
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Color.fromARGB(255, 45, 15, 106),
+                            ),
+                            value: null,
+                            // value: !isConnected
+                            //     ? 0.0
+                            //     : double.parse(
+                            //         (progress * 1.00 / 30).toStringAsFixed(1)),
+                            semanticsLabel: 'Linear progress indicator',
+                          ),
+                        ],
                       ),
-                      Column(children: [
-                        Text(
-                          "${(progress * 1.00 / 30).floor() * 100}",
-                          style: TextStyle(fontSize: 10),
-                        )
-                      ]),
                     ],
                   ),
                   Column(
