@@ -67,21 +67,23 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   late double tempAvg = 0;
   int counter = 0;
   void _onDataReceive(String spo2, String temp, String pulse) {
-    // print("in _onDataReceive");
+    print("in _onDataReceive");
     print(counter);
-    if (counter < 5) {
+    if (counter < 1) {
       spo2Readouts[counter] = int.parse(spo2);
       spo2Avg += int.parse(spo2);
-      print("$spo2 $spo2Avg");
+      print("spo2 and avg: $spo2 $spo2Avg");
       pulseReadouts[counter] = int.parse(pulse);
       pulseAvg += int.parse(pulse);
+      print("pulse and avg: $pulse $pulseAvg");
       tempReadouts[counter] = double.parse(temp);
       tempAvg += double.parse(temp);
+      print("temp and avg: $temp $tempAvg");
       counter++;
     } else {
-      spo2Avg = (spo2Avg / 5).floor();
-      pulseAvg = (pulseAvg / 5).floor();
-      tempAvg = (tempAvg / 5);
+      spo2Avg = (spo2Avg / 1).floor();
+      pulseAvg = (pulseAvg / 1).floor();
+      tempAvg = (tempAvg / 1);
       connection!.close();
       print("inside this condition");
       collectingData = false;
@@ -90,13 +92,15 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   }
 
   // function to add a new reading
-  Future<void> addReading(name, number, value) {
+  Future<void> addReading(name, number, spo2Avg, tempAvg, pulseAvg) {
     EasyLoading.show(status: 'Uploading...');
     return satReading.add({
       'name': name,
       'number': number,
       'timestamp': Timestamp.now(),
-      'value': value
+      'spo2': spo2Avg,
+      'temp': tempAvg,
+      'pulse': pulseAvg
     }).then((value) {
       EasyLoading.showSuccess('Great Success!');
       Navigator.pop(context);
@@ -110,7 +114,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   }
 
   void _uploadData() {
-    addReading("Shivam Kumar", "9161110768", spo2Avg);
+    addReading("Shivam Kumar", "9161110768", spo2Avg, tempAvg, pulseAvg);
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -127,17 +131,17 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
       }
     });
 
-    // _animationController = AnimationController(
-    //   vsync: this,
-    //   duration: const Duration(seconds: 30),
-    // );
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 60),
+    );
 
-    // _animationController.addListener(() => setState(() {}));
-    // TickerFuture tickerFuture = _animationController.repeat();
-    // tickerFuture.timeout(const Duration(seconds: 3 * 10), onTimeout: () {
-    //   _animationController.forward(from: 0);
-    //   _animationController.stop(canceled: true);
-    // });
+    _animationController.addListener(() => setState(() {}));
+    TickerFuture tickerFuture = _animationController.repeat();
+    tickerFuture.timeout(const Duration(seconds: 60), onTimeout: () {
+      _animationController.forward(from: 0);
+      _animationController.stop(canceled: true);
+    });
 
     BluetoothConnection.toAddress(widget.device.address).then((_connection) {
       print('Positive. Connected to the device');
@@ -197,12 +201,15 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   void displayDialog(BuildContext context) {
     // Random random = Random();
     // result = random.nextInt(100);
-    print("inside displayDialog");
+    // print("inside displayDialog");
+    print("sending $spo2Avg");
     showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
           return MyPopup(
             spo2Avg,
+            tempAvg,
+            pulseAvg,
             _uploadData,
           );
         });

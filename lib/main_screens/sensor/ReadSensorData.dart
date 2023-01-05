@@ -54,7 +54,9 @@ class ReadSensorData {
   bool get isConnected => (connection.isConnected ? true : false);
 
   void _onDataReceived(Uint8List data) {
+    // print("hello");
     int numBytes = ascii.decode(data).length;
+    // print(ascii.decode(data));
     // if (secondsCount < READING_BATCH_SIZE + 5) {
     if (secondsCount > 2) {
       List<String> chars = ascii.decode(data).split('');
@@ -73,6 +75,7 @@ class ReadSensorData {
       // print("Current Reading:  ${currReading.toString()}");
 
       int validReadingsIndex = clearInvalidReadings(currReadings, true);
+      bool validity = checkValidity(currReadings, true);
       // print("===starting loop===");
       // for (int i = 0; i < currReadings.length; i++) {
       //   print("$i: ${currReadings[i]}");
@@ -100,12 +103,13 @@ class ReadSensorData {
         }
       }
 
-      if (secondsCount >= 5 && validReadingsIndex != -1) {
+      if (secondsCount >= 5 && validity) {
         _onRead();
+        // print("validR: ${allReadingsList[validReadingsIndex]}");
         _updateData(
-          avgReading.spo2.toString(),
-          avgReading.temp.toString(),
-          avgReading.pulse.toString(),
+          currReadings[0].spo2.toString(),
+          currReadings[0].temp.toString(),
+          currReadings[0].pulse.toString(),
         );
       }
     }
@@ -198,6 +202,23 @@ class ReadSensorData {
     }
 
     return allFrames;
+  }
+
+  bool checkValidity(List<Max30102> readingsArr, bool strict) {
+    bool validity = true;
+
+    if (!(readingsArr[0].getPulse() > 30 && readingsArr[0].getPulse() < 220)) {
+      validity = false;
+    }
+
+    if (!(readingsArr[0].getSpo2() > 60 && readingsArr[0].getSpo2() < 100)) {
+      validity = false;
+    }
+
+    if (!(readingsArr[0].getTemp() > 20 && readingsArr[0].getTemp() < 42)) {
+      validity = false;
+    }
+    return validity;
   }
 
   int clearInvalidReadings(List<Max30102> readingsArr, bool strict) {

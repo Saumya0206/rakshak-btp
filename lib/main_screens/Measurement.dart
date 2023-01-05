@@ -160,6 +160,8 @@ class _MeasurementState extends State<Measurement> {
         height: 70,
         child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed, // Fixed
+            currentIndex: _index,
+            onTap: (int index) => setState(() => _index = index),
             backgroundColor: Color.fromARGB(255, 114, 38, 128),
             selectedItemColor: Color.fromARGB(255, 0, 0, 0),
             unselectedItemColor: Color.fromARGB(255, 185, 131, 195),
@@ -167,6 +169,16 @@ class _MeasurementState extends State<Measurement> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.library_books_rounded),
                 label: 'Manual',
+                onPressed: () {
+                  print("yep");
+                  FeatureDiscovery.discoverFeatures(
+                    context,
+                    const <String>{
+                      'system',
+                      'reading',
+                    },
+                  );
+                },
                 // backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
               BottomNavigationBarItem(
