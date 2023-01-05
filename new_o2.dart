@@ -124,7 +124,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     BluetoothConnection.toAddress(widget.device.address).then((_connection) {
       print('Positive. Connected to the device');
       connection = _connection;
-      readSensorData = ReadSensorData(_connection, _onRead, _onDataReceive);
+      readSensorData = ReadSensorData(_connection, _onRead, _onData);
       readSensorData.startListening();
       setState(() {
         isConnecting = false;
