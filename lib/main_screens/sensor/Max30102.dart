@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
+// class to manipulate sensor readings
+
 class Max30102 {
   late int spo2;
   late int pulse;

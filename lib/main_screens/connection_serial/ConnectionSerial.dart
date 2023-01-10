@@ -28,7 +28,7 @@ class _ConnectionSerial extends State<ConnectionSerial> {
 
     // FlutterBluetoothSerial.instance.cancelDiscovery().then((result) {});
 
-    // Get current state
+    // update Bluetooth object
     FlutterBluetoothSerial.instance.state.then((state) {
       setState(() {
         _btState = state;
@@ -88,10 +88,6 @@ class _ConnectionSerial extends State<ConnectionSerial> {
         backgroundColor: const Color.fromARGB(255, 93, 23, 105),
         foregroundColor: Colors.white,
         elevation: 1.0,
-        // leading: IconButton(
-        //   onPressed: () {},
-        //   icon: Icon(Icons.bluetooth),
-        // ),
       ),
       body: (_btState.isEnabled
           ? DiscoveryPage()
@@ -110,6 +106,7 @@ class BluetoothOffScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 93, 23, 105),
       body: Container(
+          alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -122,9 +119,7 @@ class BluetoothOffScreen extends StatelessWidget {
                 'Bluetooth Adapter is ${state != BluetoothState.STATE_OFF ? state.toString().substring(15) : 'not available'}.',
               ),
             ],
-          ),
-          alignment: Alignment.center),
-      // Text("data"),
+          )),
     );
   }
 }
@@ -187,8 +182,6 @@ class _DiscoveryPage extends State<DiscoveryPage> {
     });
   }
 
-  // @TODO . One day there should be `_pairDevice` on long tap on something... ;)
-
   @override
   void dispose() {
     // Avoid memory leak (`setState` after dispose) and cancel discovery
@@ -200,14 +193,11 @@ class _DiscoveryPage extends State<DiscoveryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // toolbarHeight: 80,
-        // title: const Text('Find Devices', style: TextStyle(fontSize: 30)),
         backgroundColor: Color.fromARGB(255, 134, 57, 147),
         foregroundColor: Colors.white,
-        // elevation: 1.0,
         leading: IconButton(
           onPressed: () {},
-          icon: Icon(Icons.bluetooth),
+          icon: const Icon(Icons.bluetooth),
         ),
         title: isDiscovering
             ? const Text('Discovering devices', style: TextStyle(fontSize: 20))
@@ -343,17 +333,7 @@ class _DiscoveryPage extends State<DiscoveryPage> {
             ),
           ],
         ),
-        // ),
-        // items: const <BottomNavigationBarItem>[
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.home),
-        //   label: 'Home',
-        //   backgroundColor: Color.fromARGB(255, 93, 23, 105),
-        // ),
       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
@@ -402,6 +382,7 @@ class BluetoothDeviceListEntry extends ListTile {
           ),
         );
 
+  // switch style based on connection strength
   static TextStyle _computeTextStyle(int rssi) {
     /**/ if (rssi >= -35)
       return TextStyle(color: Colors.greenAccent[700]);

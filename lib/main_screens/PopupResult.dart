@@ -1,5 +1,6 @@
-import 'dart:ffi';
 import 'package:flutter/material.dart';
+
+// Popup that shows results
 
 class MyPopup extends StatelessWidget {
   String title = "Thank You!";
@@ -24,10 +25,6 @@ class MyPopup extends StatelessWidget {
         this.title,
         style: Theme.of(context).textTheme.bodyText1,
       ),
-      // content: Text(
-      //   this.message1 + _spo2.toString(),
-      //   style: Theme.of(context).textTheme.bodyText1,
-      // ),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         // //position
@@ -35,19 +32,17 @@ class MyPopup extends StatelessWidget {
         // wrap content in flutter
         children: <Widget>[
           Text(
-            // this.message1 + _spo2.toString(),
-            this.message1 + "99",
+            this.message1 + _spo2.toString(),
             style: Theme.of(context).textTheme.bodyText1,
           ),
           Text(
-            this.message2 + "33.4",
+            this.message2 + _temp.toString(),
             style: Theme.of(context).textTheme.bodyText1,
           ),
           Text(
-            this.message3 + "100",
+            this.message3 + _pulse.toString(),
             style: Theme.of(context).textTheme.bodyText1,
           ),
-          // Text("Password : " + etPassword.text)
         ],
       ),
       actions: [
@@ -56,7 +51,7 @@ class MyPopup extends StatelessWidget {
             Navigator.pop(context, 'OK');
             _uploadData();
           },
-          child: Text('OK'),
+          child: const Text('OK'),
         )
       ],
     );

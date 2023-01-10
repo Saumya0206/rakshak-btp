@@ -3,21 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:rakshak/main_screens/PopupResult.dart';
 import 'package:rakshak/main_screens/sensor/ReadSensorData.dart';
-
 import 'dart:async';
 import 'dart:convert';
 
-// database
+// database related
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart'; // for loading screen
 
+// firestore collection
 CollectionReference satReading =
     FirebaseFirestore.instance.collection('saturation');
 
@@ -55,7 +53,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   int progress = 0;
   void _onRead() {
     progress++;
-    // print("Here is progress: ${progress / 30}. Connection state: $isConnected");
   }
 
   // store the data for upload
@@ -67,25 +64,19 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   late double tempAvg = 0;
   int counter = 0;
   void _onDataReceive(String spo2, String temp, String pulse) {
-    print("in _onDataReceive");
-    print(counter);
     if (counter < 1) {
       spo2Readouts[counter] = int.parse(spo2);
       spo2Avg += int.parse(spo2);
-      print("spo2 and avg: $spo2 $spo2Avg");
       pulseReadouts[counter] = int.parse(pulse);
       pulseAvg += int.parse(pulse);
-      print("pulse and avg: $pulse $pulseAvg");
       tempReadouts[counter] = double.parse(temp);
       tempAvg += double.parse(temp);
-      print("temp and avg: $temp $tempAvg");
       counter++;
     } else {
       spo2Avg = (spo2Avg / 1).floor();
       pulseAvg = (pulseAvg / 1).floor();
       tempAvg = (tempAvg / 1);
       connection!.close();
-      print("inside this condition");
       collectingData = false;
       displayDialog(context);
     }
@@ -113,6 +104,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
     });
   }
 
+  // voidCallback
   void _uploadData() {
     addReading("Shivam Kumar", "9161110768", spo2Avg, tempAvg, pulseAvg);
   }
@@ -158,7 +150,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
 
   void _sendMessage(String text) async {
     text = text.trim();
-    print(text);
 
     if (text.isNotEmpty) {
       try {
@@ -172,18 +163,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
       }
     }
   }
-
-  // @override
-  // void initState() {
-  //   controller = AnimationController(
-  //     vsync: this,
-  //     duration: const Duration(seconds: 30),
-  //   )..addListener(() {
-  //       setState(() {});
-  //     });
-  //   controller.repeat(reverse: false);
-  //   super.initState();
-  // }
 
   @override
   void dispose() {
@@ -199,10 +178,7 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
   }
 
   void displayDialog(BuildContext context) {
-    // Random random = Random();
-    // result = random.nextInt(100);
-    // print("inside displayDialog");
-    print("sending $spo2Avg");
+    // display popup
     showDialog(
         context: context,
         builder: (BuildContext dialogContext) {
@@ -213,7 +189,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
             _uploadData,
           );
         });
-    print("xyz");
     // Navigator.pop(context);
   }
 
@@ -229,7 +204,6 @@ class _O2State extends State<O2> with TickerProviderStateMixin {
           children: [
             const Align(
               alignment: Alignment.topRight,
-              // child: Image.asset('assets/images/background.png'),
             ),
             Padding(
               padding: const EdgeInsets.only(

@@ -23,7 +23,7 @@ class HomeMain extends StatefulWidget {
 }
 
 class _HomeMainState extends State<HomeMain> {
-  bool _showSpinner = false;
+  final bool _showSpinner = false;
   late int result;
 
   // Get current logged in user
@@ -49,37 +49,6 @@ class _HomeMainState extends State<HomeMain> {
 
   @override
   Widget build(BuildContext context) {
-    Widget child = Container();
-
-    switch (_index) {
-      case 0:
-        // child = FlutterLogo(colors: Colors.orange);
-        onPressed:
-        () {
-          print("yep");
-          FeatureDiscovery.discoverFeatures(
-            context,
-            const <String>{
-              'system',
-              'reading',
-            },
-          );
-        };
-        break;
-
-      case 1:
-        child = FlutterLogo();
-        onPressed:
-        () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultPage(),
-            ),
-          );
-        };
-        break;
-    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -133,20 +102,37 @@ class _HomeMainState extends State<HomeMain> {
                   ),
                   Column(
                     children: [
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RecordPage(),
-                              ),
-                            );
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.asset('assets/images/HeartRate.png',
-                                width: 305.0, height: 200.0),
+                      DescribedFeatureOverlay(
+                        featureId: 'record',
+                        backgroundColor:
+                            const Color.fromARGB(255, 208, 154, 218),
+                        tapTarget: const Icon(Icons.medical_services_outlined),
+                        overflowMode: OverflowMode.wrapBackground,
+                        title: const Text(
+                          'Record heartbeat',
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                        pulseDuration: const Duration(seconds: 1),
+                        enablePulsingAnimation: true,
+                        // overflowMode: OverflowMode.extendBackground,
+                        openDuration: const Duration(seconds: 1),
+                        description:
+                            const Text('Click here to record your heartbeat'),
+                        child: Material(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RecordPage(),
+                                ),
+                              );
+                            },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: Image.asset('assets/images/HeartRate.png',
+                                  width: 305.0, height: 200.0),
+                            ),
                           ),
                         ),
                       )
@@ -154,24 +140,42 @@ class _HomeMainState extends State<HomeMain> {
                   ),
                   Column(
                     children: [
-                      Material(
-                        child: InkWell(
-                          onTap: () {
-                            // Navigator.pushNamed(context, ConnectionSerial.id);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ConnectionSerial(),
-                              ),
-                            );
-                          },
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5.0),
-                            child: Image.asset('assets/images/POTMeasure.png',
-                                width: 360.0, height: 155.0),
+                      DescribedFeatureOverlay(
+                          featureId: 'collect',
+                          backgroundColor:
+                              const Color.fromARGB(255, 208, 154, 218),
+                          tapTarget: const Icon(Icons.thermostat),
+                          overflowMode: OverflowMode.wrapBackground,
+                          title: const Text(
+                            'Record body vitals',
+                            style: TextStyle(fontSize: 20.0),
                           ),
-                        ),
-                      )
+                          pulseDuration: const Duration(seconds: 1),
+                          enablePulsingAnimation: true,
+                          // overflowMode: OverflowMode.extendBackground,
+                          openDuration: const Duration(seconds: 1),
+                          description: const Text(
+                              'Click here to measure your spo2, temperature & pulse'),
+                          child: Material(
+                            child: InkWell(
+                              onTap: () {
+                                // Navigator.pushNamed(context, ConnectionSerial.id);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ConnectionSerial(),
+                                  ),
+                                );
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: Image.asset(
+                                    'assets/images/POTMeasure.png',
+                                    width: 360.0,
+                                    height: 155.0),
+                              ),
+                            ),
+                          )),
                     ],
                   ),
                 ],
@@ -180,8 +184,6 @@ class _HomeMainState extends State<HomeMain> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      // toolbarHeight: 70,
     );
   }
 }

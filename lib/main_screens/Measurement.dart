@@ -54,33 +54,12 @@ class _MeasurementState extends State<Measurement> {
   Widget build(BuildContext context) {
     Widget child = HomeMain();
 
+    // switch between different views from the bottom navigation bar
     switch (_index) {
       case 0:
-        // child = FlutterLogo(colors: Colors.orange);
-        onPressed:
-        () {
-          print("yep");
-          FeatureDiscovery.discoverFeatures(
-            context,
-            const <String>{
-              'system',
-              'reading',
-            },
-          );
-        };
         break;
-
       case 1:
         child = ResultPage();
-        // onPressed:
-        // () {
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) => ResultPage(),
-        //     ),
-        //   );
-        // };
         break;
       default:
         child = HomeMain();
@@ -91,55 +70,106 @@ class _MeasurementState extends State<Measurement> {
         toolbarHeight: 80,
         title: const Text('R A K S H A K', style: TextStyle(fontSize: 40)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 114, 38, 128),
+        backgroundColor: const Color.fromARGB(255, 156, 92, 167),
         foregroundColor: Colors.white,
         elevation: 1.0,
       ),
-      // resizeToAvoidBottomInset: false,
-      // backgroundColor: Colors.white,
       body: SizedBox.expand(child: child),
-      // bottomNavigationBar: BottomNavigationBar(
-      // toolbarHeight: 70,
       bottomNavigationBar: SizedBox(
         height: 70,
         child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed, // Fixed
             currentIndex: _index,
             onTap: (int index) {
-              setState(() => _index = index);
+              if (index != 0) {
+                setState(() => _index = index);
+              } else {
+                setState(() => _index = index);
+
+                // start the tutorial
+                FeatureDiscovery.discoverFeatures(
+                  context,
+                  const <String>{
+                    'reading',
+                    'manual',
+                    'record',
+                    'collect',
+                    'home',
+                  },
+                );
+              }
             },
-            backgroundColor: Color.fromARGB(255, 114, 38, 128),
-            selectedItemColor: Color.fromARGB(255, 0, 0, 0),
-            unselectedItemColor: Color.fromARGB(255, 185, 131, 195),
+            backgroundColor: const Color.fromARGB(255, 114, 38, 128),
+            selectedItemColor: const Color.fromARGB(255, 0, 0, 0),
+            unselectedItemColor: const Color.fromARGB(255, 185, 131, 195),
             items: const [
               BottomNavigationBarItem(
-                icon: Icon(Icons.library_books_rounded),
+                // icon: Icon(Icons.library_books_rounded),
+                icon: DescribedFeatureOverlay(
+                  featureId: 'manual',
+                  targetColor: Colors.white,
+                  textColor: Colors.black,
+                  backgroundColor: Color.fromARGB(255, 208, 154, 218),
+                  contentLocation: ContentLocation.trivial,
+                  title: Text(
+                    'Manual',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                  pulseDuration: Duration(seconds: 1),
+                  enablePulsingAnimation: true,
+                  overflowMode: OverflowMode.extendBackground,
+                  openDuration: Duration(seconds: 1),
+                  description: Text('Click here to take a tour'),
+                  tapTarget: Icon(Icons.library_books_rounded),
+                  child: Icon(Icons.library_books_rounded),
+                ),
                 label: 'Manual',
-
-                // backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark_add_rounded),
+                icon: DescribedFeatureOverlay(
+                  featureId: 'reading',
+                  targetColor: Colors.white,
+                  textColor: Colors.black,
+                  backgroundColor: Color.fromARGB(255, 208, 154, 218),
+                  contentLocation: ContentLocation.trivial,
+                  title: Text(
+                    'Reading',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                  pulseDuration: Duration(seconds: 1),
+                  enablePulsingAnimation: true,
+                  overflowMode: OverflowMode.extendBackground,
+                  openDuration: Duration(seconds: 1),
+                  description: Text('Click here to see the previous readings'),
+                  tapTarget: Icon(Icons.bookmark_add_rounded),
+                  child: Icon(Icons.bookmark_add_rounded),
+                ),
                 label: 'Reading',
-                // backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                // icon: Icon(Icons.home),
+                icon: DescribedFeatureOverlay(
+                  featureId: 'home',
+                  targetColor: Colors.white,
+                  textColor: Colors.black,
+                  backgroundColor: Color.fromARGB(255, 208, 154, 218),
+                  contentLocation: ContentLocation.trivial,
+                  title: Text(
+                    'Home Page',
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                  pulseDuration: Duration(seconds: 1),
+                  enablePulsingAnimation: true,
+                  overflowMode: OverflowMode.extendBackground,
+                  openDuration: Duration(seconds: 1),
+                  description: Text('Click here to return to home page'),
+                  tapTarget: Icon(Icons.home),
+                  child: Icon(Icons.home),
+                ),
                 label: 'Home',
-                // backgroundColor: Color.fromARGB(255, 93, 23, 105),
               ),
               // ],
-              // currentIndex: _selectedIndex,
-              // selectedItemColor: Color.fromARGB(255, 255, 255, 255),
-              // onTap: _onItemTapped,
             ]),
-        // ),
-        // items: const <BottomNavigationBarItem>[
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.home),
-        //   label: 'Home',
-        //   backgroundColor: Color.fromARGB(255, 93, 23, 105),
-        // ),
       ),
     );
   }

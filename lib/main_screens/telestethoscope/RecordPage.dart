@@ -44,7 +44,7 @@ class RecordPage extends StatefulWidget {
 
 class _SimpleRecorderState extends State<RecordPage> {
   Codec _codec = Codec.aacMP4;
-  String _mPath = 'tau_file.mp4';
+  String _mPath = 'recording.mp4';
   FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
   bool _mPlayerIsInited = false;
@@ -63,6 +63,8 @@ class _SimpleRecorderState extends State<RecordPage> {
       setState(() {
         _mRecorderIsInited = true;
       });
+    }).catchError((error) {
+      print(error.toString());
     });
     super.initState();
   }
@@ -115,8 +117,6 @@ class _SimpleRecorderState extends State<RecordPage> {
     _mRecorderIsInited = true;
   }
 
-  // ----------------------  Here is the code for recording and playback -------
-
   void record() {
     _mRecorder!
         .startRecorder(
@@ -160,8 +160,6 @@ class _SimpleRecorderState extends State<RecordPage> {
       setState(() {});
     });
   }
-
-// ----------------------------- UI --------------------------------------------
 
   _Fn? getRecorderFn() {
     if (!_mRecorderIsInited || !_mPlayer!.isStopped) {
@@ -274,30 +272,6 @@ class _SimpleRecorderState extends State<RecordPage> {
                 ),
               ],
             ),
-            // ),
-            // child: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.stretch,
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     SizedBox(
-            //         width: 150, // <-- Your width
-            //         height: 100, // <-- Your height
-            //         child: ElevatedButton(
-            //           onPressed: () {},
-            //           child: Text(
-            //             'Reading',
-            //             style: TextStyle(fontSize: 20.0),
-            //           ),
-            //           style: ElevatedButton.styleFrom(
-            //             shape: RoundedRectangleBorder(
-            //                 //to set border radius to button
-            //                 borderRadius: BorderRadius.circular(30)),
-            //             backgroundColor:
-            //                 const Color.fromARGB(255, 93, 23, 105), //Text Color
-            //           ),
-            //         ))
-            //   ],
-            // ),
           )
         ],
       );
@@ -315,7 +289,7 @@ class _SimpleRecorderState extends State<RecordPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.record_voice_over),
+            icon: const Icon(Icons.record_voice_over),
           ),
         ],
         // elevation: 1.0,

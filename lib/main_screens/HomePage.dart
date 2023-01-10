@@ -17,22 +17,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // @override
-  // for calling feature discovery immediately when page opens
-  // initState() {
-  //   print('im here');
-  // SchedulerBinding.instance.addPostFrameCallback((_) {
-  //   FeatureDiscovery.discoverFeatures(
-  //     context,
-  //     const <String>[
-  //       'system',
-  //       'reading',
-  //     ],
-  //   );
-  // });
-  //   super.initState();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

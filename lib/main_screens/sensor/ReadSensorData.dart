@@ -11,7 +11,7 @@ import 'package:rakshak/main_screens/sensor/Max30102.dart';
 class ReadSensorData {
   final bool DEBUG_MODE = false;
   final int READING_BATCH_SIZE = 30;
-  final int AVG_WINDOW_SIZE = 4; // what is this?
+  final int AVG_WINDOW_SIZE = 4; // moving average
 
   int secondsCount = 0; // helps in ignoring first 3 seconds of reading
 
@@ -54,10 +54,8 @@ class ReadSensorData {
   bool get isConnected => (connection.isConnected ? true : false);
 
   void _onDataReceived(Uint8List data) {
-    // print("hello");
     int numBytes = ascii.decode(data).length;
     // print(ascii.decode(data));
-    // if (secondsCount < READING_BATCH_SIZE + 5) {
     if (secondsCount > 2) {
       List<String> chars = ascii.decode(data).split('');
 
@@ -72,16 +70,9 @@ class ReadSensorData {
       String newData = chars.join().replaceAll(' ', '');
 
       List<Max30102> currReadings = parseData(newData);
-      // print("Current Reading:  ${currReading.toString()}");
 
       int validReadingsIndex = clearInvalidReadings(currReadings, true);
       bool validity = checkValidity(currReadings, true);
-      // print("===starting loop===");
-      // for (int i = 0; i < currReadings.length; i++) {
-      //   print("$i: ${currReadings[i]}");
-      // }
-      // print("===ending loop====");
-      // print("$secondsCount $validReadingsIndex");
       Max30102 avgReading = Max30102(0, 0, 0);
 
       if (validReadingsIndex != -1) {
@@ -92,12 +83,8 @@ class ReadSensorData {
         for (int i = readingsCount - 1;
             i >= max(readingsCount - AVG_WINDOW_SIZE, 0);
             --i) {
-          // print("this runs");
-          // print("adding: ${allReadingsList[i]}");
           avgReading.add(allReadingsList[i]);
-          // print("avg: $avgReading");
         }
-        // print("avgReading:spo2 value: ${avgReading.spo2}");
         if (readingsCount > 0) {
           avgReading.divBy(min(readingsCount, AVG_WINDOW_SIZE));
         }
@@ -105,7 +92,7 @@ class ReadSensorData {
 
       if (secondsCount >= 5 && validity) {
         _onRead();
-        // print("validR: ${allReadingsList[validReadingsIndex]}");
+        // upload the valid reading
         _updateData(
           currReadings[0].spo2.toString(),
           currReadings[0].temp.toString(),
@@ -115,8 +102,6 @@ class ReadSensorData {
     }
     sleep(const Duration(milliseconds: 1000));
     secondsCount++;
-    // }
-    // print('Data Incoming: ${ascii.decode(data)}');
   }
 
   List<Max30102> parseData(String data) {
@@ -126,13 +111,6 @@ class ReadSensorData {
 
     int framesStartIndex = data.indexOf('^');
     int framesEndIndex = data.lastIndexOf("\$");
-
-    // DEBUGGING
-    // print("==================");
-    // print(data);
-    // print(framesStartIndex);
-    // print(framesEndIndex);
-    // print("==================");
 
     if (framesStartIndex == -1) {
       // if both ^ and $ are not in the string, add it to partial frame
@@ -167,19 +145,6 @@ class ReadSensorData {
       return parseFrames(data.substring(0, framesEndIndex + 1), allFrames);
     }
     return parseFrames(data, allFrames);
-
-    // if (framesStartIndex != 0) {
-    //   if (!identical("", partialFrame)) {
-    //     String frame = partialFrame + data.substring(0, framesStartIndex);
-    //     parseFrames(frame, allFrames);
-    //   }
-    // } else {
-    //   partialFrame = "";
-    // }
-    // if (framesEndIndex != data.length - 1) {
-    //   partialFrame = data.substring(framesEndIndex + 1);
-    // }
-    // return parseFrames(data, allFrames);
   }
 
   List<Max30102> parseFrames(String data, List<Max30102> allFrames) {
@@ -192,18 +157,17 @@ class ReadSensorData {
 
       // ignore null values
       if (temp == 0 || pulse == 0 || spo2 == 0) {
-        // print("found null value");
         continue;
       }
 
-      print("$pulse $spo2 $temp");
-      // print("New: ${Max30102(spo2, pulse, temp / 10.0)}");
+      // print("$pulse $spo2 $temp");
       allFrames[currentIdx] = (Max30102(spo2, pulse, temp / 10.0));
     }
 
     return allFrames;
   }
 
+  // function to check if collected data is valid
   bool checkValidity(List<Max30102> readingsArr, bool strict) {
     bool validity = true;
 
